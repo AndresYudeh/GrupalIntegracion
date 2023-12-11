@@ -7,52 +7,11 @@
   <title>Servicios CRUD</title>
   <!-- Agrega aquí tus enlaces a CSS o cualquier otro recurso necesario -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
 
-    #navbar {
-      background-color: #333;
-      padding: 10px;
-      text-align: center;
-    }
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
-    #navbar a {
-      color: white;
-      text-decoration: none;
-      padding: 10px;
-      display: inline-block;
-    }
+  <link rel="stylesheet" type="text/css" href="./mantenimientos.css" th:href="@{/css/index.css}">
 
-    #navbar .dropdown {
-      display: inline-block;
-      position: relative;
-    }
-
-    #navbar .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #555;
-      min-width: 160px;
-      z-index: 1;
-    }
-
-    #navbar .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    #formContainer {
-      margin-top: 60px;
-      padding: 20px;
-    }
-
-    form {
-      margin-bottom: 20px;
-    }
-  </style>
 </head>
 <body>
   <nav id="navbar">
@@ -69,6 +28,25 @@
     <a href="#" onclick="cargarpagMan('cargarpagMan')">Mantenimientos</a>
     <a href="#" onclick="regresar('regresar')">Regresar</a>
   </nav>
+  <div class="mx-auto text-center">
+    <h3 class="section-heading logo">UNIDADES </h3>
+    <div class="btn-group mt-2"  aria-label="Botones Unidades">
+      <button type="button" class="btn btn-primary" onclick="mostrarForm('ver')">Ver</button>
+    </div>
+
+    <div class="btn-group mt-2"  aria-label="Botones Unidades">
+      <button type="button" class="btn btn-secondary" onclick="mostrarForm('editar')">Editar</button>
+    </div>
+
+    <div class="btn-group mt-2"  aria-label="Botones Unidades">
+      <button type="button" class="btn btn-success" onclick="mostrarForm('crear')">Crear</button>
+    </div>
+
+    <div class="btn-group mt-2"  aria-label="Botones Unidades">
+      <button type="button" class="btn btn-danger" onclick="mostrarForm('eliminar')">Eliminar</button>
+    </div>
+
+  </div>
 
   <div id="formContainer">
     <!-- Aquí se mostrarán dinámicamente los formularios -->
@@ -76,7 +54,7 @@
 
   <script>
     function regresar() {
-      window.close();
+      window.location.href = `menu.html`;
     }
     function cargarpagRep() {
       window.location.href = `app.html`;

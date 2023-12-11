@@ -2,6 +2,9 @@ console.log('Dashboard script loaded');
 import './style.css';
 import { io } from 'socket.io-client'; // Import socket.io-client
 import axios, { AxiosError } from 'axios';
+// Importar estilos y scripts de Bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
 
 // Establish a connection to the WebSocket server
 const socket = io('http://localhost:3000/'); // Replace localhost with your actual server address
@@ -48,35 +51,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Asegúrate de que el elemento con el id 'dash' existe en tu HTML
 document.querySelector<HTMLDivElement>('#dash')!.innerHTML = `
-<div class="dashboard-container" style="display: flex; flex-direction: column; height: 50%; margin: 10%;">
-<h1 class="dashboard-title">Dashboard</h1>
-<table class="dashboard-table" style="width: 60%; margin-top: 0%; margin-bottom: 10%;">
-  <thead>
-    <tr>
-      <th>ID del reporte</th>
-      <th>Fecha</th>
-      <th>Descripción</th>
-    </tr>
-  </thead>
-  <tbody class="dashboard-table-body" id="reportTableBody">
-    <!-- Aquí se agregarán dinámicamente las filas de la tabla -->
-  </tbody>
-</table>
-<div class="dashboard" id="commentForm" style="display: none; width: 80%; margin-bottom: 10px;">
-  <div class="dashboard-sidebar">
-    <ul>
-      <li><a href="/" class="dashboard-link">Home</a></li>
-      <li><a href="/perfil" class="dashboard-link">Perfil</a></li>
-    </ul>
+<body  >
+
+
+  <div class="dashboard-container" style="display: flex; flex-direction: column; height: 50%; margin: 10%;">
+
+  <div class="container col-8">
+      <div class="mx-auto text-center">
+        <h3 class="section-heading logo">Dashboard</h3>
+      </div>
   </div>
-  <div class="dashboard-content" style="text-align: center; margin: 10px;">
-    <h1>Dashboard</h1>
-    <p>Interfaz 1</p>
+  
+  <table class="content-table mx-12">
+    <thead>
+      <tr>
+        <th>ID del reporte</th>
+        <th>Fecha</th>
+        <th>Descripción</th>
+      </tr>
+    </thead>
+
+
+    <tbody class="dashboard-table-body" id="reportTableBody">
+    </tbody>
+  </table>
+
+
+  <div class="dashboard" id="commentForm" style="display: none; width: 80%; margin-bottom: 10px;">
+   
+    
+     <div id="message" class="dashboard-message" style="margin-top: 10px;"></div>
+
   </div>
-  <button type="submit" onclick="showDiv2()" class="dashboard-button" style="margin-top: 10px;">Login</button>
-  <div id="message" class="dashboard-message" style="margin-top: 10px;"></div>
-</div>
-</div>
+  </div>
+
+
+</body>
 
 `;
 

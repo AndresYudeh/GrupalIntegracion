@@ -7,57 +7,16 @@
   <title>Servicios CRUD</title>
   <!-- Agrega aquí tus enlaces a CSS o cualquier otro recurso necesario -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
 
-    #navbar {
-      background-color: #333;
-      padding: 10px;
-      text-align: center;
-    }
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
-    #navbar a {
-      color: white;
-      text-decoration: none;
-      padding: 10px;
-      display: inline-block;
-    }
+  <link rel="stylesheet" type="text/css" href="./mantenimientos.css" th:href="@{/css/index.css}">
 
-    #navbar .dropdown {
-      display: inline-block;
-      position: relative;
-    }
-
-    #navbar .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #555;
-      min-width: 160px;
-      z-index: 1;
-    }
-
-    #navbar .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    #formContainer {
-      margin-top: 60px;
-      padding: 20px;
-    }
-
-    form {
-      margin-bottom: 20px;
-    }
-  </style>
 </head>
 <body>
-  <nav id="navbar">
+  <nav id="navbar" >
     <a href="#" onclick="cargarpagRep('cargarpagRep')">Repostajes</a>
-    <a href="#" onclick="cargarpagMan('cargarpagUni')">Unidades</a>
+    <a href="#" onclick="cargarpagUni('cargarpagUni')">Unidades</a>
     <!-- <a href="#" onclick="cargarpagMan('cargarpagMan')">Mantenimientos</a> -->
     <div class="dropdown" onclick="toggleDropdown('repostajesDropdown')">
         <a href="#">Mantenimientos</a>
@@ -71,13 +30,36 @@
     <a href="#" onclick="regresar('regresar')">Regresar</a>
   </nav>
 
+  <div class="mx-auto text-center">
+    <h3 class="section-heading logo">MANTENIMIENTOS </h3>
+    <div class="btn-group mt-2"  aria-label="Botones Mantenimientos">
+      <button type="button" class="btn btn-primary" onclick="mostrarForm('ver')">Ver</button>
+    </div>
+
+    <div class="btn-group mt-2"  aria-label="Botones Mantenimientos">
+      <button type="button" class="btn btn-secondary" onclick="mostrarForm('editar')">Editar</button>
+    </div>
+
+    <div class="btn-group mt-2"  aria-label="Botones Mantenimientos">
+      <button type="button" class="btn btn-success" onclick="mostrarForm('crear')">Crear</button>
+    </div>
+
+    <div class="btn-group mt-2"  aria-label="Botones Mantenimientos">
+      <button type="button" class="btn btn-danger" onclick="mostrarForm('eliminar')">Eliminar</button>
+    </div>
+
+  </div>
+
+
+
+
   <div id="formContainer">
     <!-- Aquí se mostrarán dinámicamente los formularios -->
   </div>
 
   <script>
     function regresar() {
-      window.close();
+      window.location.href = `menu.html`;
     }
     function cargarpagRep() {
       window.location.href = `app.html`;
@@ -154,18 +136,56 @@
 
         case 'crear':
           formContainer.innerHTML = `
-          <div class="crear-mantenimiento">
-            <h2>Crear un nuevo mantenimiento.</h2>
+          <div class="container mt-5">
+  <div class="mx-auto text-center">
+    <h3 class="section-heading logo">NUEVO MANTENIMIENTO</h3>
+  </div>
 
-            <input type="text" id="MANTENIMIENTO_KMAC" placeholder="MANTENIMIENTO_KMAC">
-            <input type="text" id="MANTENIMIENTO_KMPROX" placeholder="MANTENIMIENTO_KMPROX">
-            <input type="text" id="MANTENIMIENTO_COMENTARIO" placeholder="MANTENIMIENTO_COMENTARIO">
-            <input type="text" id="FECHA" placeholder="FECHA">
-            <input type="text" id="UNIDADES_PLACA" placeholder="UNIDADES_PLACA">
-            <input type="text" id="TIPOSMANTE_ID" placeholder="TIPOSMANTE_ID">
+  <div class="container-lg mb-8" id="services-cards" style="margin-top: 4rem;">
+    <div class="card m-2">
+      <div class="row">
+        <div class="container mb-3">
+          <form>
 
-            <button type="button" onclick="crearMante()">Crear</button>
-          </div>
+            <div class="mb-3">
+              <label for="kmac" class="form-label">Kilómetros Actuales</label>
+              <div class="input-group">
+                <input type="text" id="MANTENIMIENTO_KMAC" class="form-control small-input">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="kprox" class="form-label">Kilómetros Próximos</label>
+              <input type="text" id="MANTENIMIENTO_KMPROX" class="form-control" placeholder="MANTENIMIENTO_KMPROX">
+            </div>
+
+            <div class="mb-3">
+              <label for="comentario" class="form-label">Comentario</label>
+              <input type="text" id="MANTENIMIENTO_COMENTARIO" class="form-control" placeholder="MANTENIMIENTO_COMENTARIO">
+            </div>
+
+            <div class="mb-3">
+              <label for="fecha" class="form-label">Fecha</label>
+              <input type="text" id="FECHA" class="form-control" placeholder="FECHA">
+            </div>
+
+            <div class="mb-3">
+              <label for="placa" class="form-label">Placa de Unidad</label>
+              <input type="text" id="UNIDADES_PLACA" class="form-control" placeholder="UNIDADES_PLACA">
+            </div>
+
+            <div class="mb-3">
+              <label for="tiposmante" class="form-label">ID de Tipos de Mantenimiento</label>
+              <input type="text" id="TIPOSMANTE_ID" class="form-control" placeholder="TIPOSMANTE_ID">
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="crearMante()">Crear</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
           `;
           break;
 

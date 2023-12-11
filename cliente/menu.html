@@ -1,0 +1,96 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Services Section</title>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+      <!-- Enlace a Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+  <link rel="stylesheet" type="text/css" href="./menu-style.css" th:href="@{/css/index.css}">
+
+ 
+  </head>
+  
+  <body class="container-fluid">
+  
+    <nav class="nav">
+      <i class="uil uil-bars navOpenBtn"></i>
+      <a href="#" class="logo">APPWEB MANKAR</a>
+      <ul class="nav-links">
+        <i class="uil uil-times navCloseBtn"></i>
+        <li><a href="/">Home</a></li>
+        <li><a onclick="irAMantenimientos()">Mantenimientos</a></li>
+        <li><a onclick="irAUnidades()">Unidades</a></li>
+        <li><a onclick="irARepostajes()">Repostajes</a> </li>
+     
+      </ul>
+    </nav>
+  
+    <section>
+      <div class="row">
+        <h3 class="section-heading logo">SELECCIONE UN SERVICIO</h3>
+      </div>
+  
+      <div class="row">
+  
+        <div class="column" onclick="irAMantenimientos()">
+          <div class="card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-gear"></i>
+            </div>
+            <h3>Mantenimientos</h3>
+            <p>
+              Haz click aqui para ver la lista de Mantenimientos.
+            </p>
+          </div>
+        </div>
+        
+        <div class="column" onclick="irAUnidades()">
+          <div class="card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-truck-moving"></i>
+            </div>
+            <h3>Unidades</h3>
+            <p>
+              Haz click aqui para ver la lista de unidades
+            </p>
+          </div>
+        </div>
+
+        
+
+        <div class="column" onclick="irARepostajes()">
+          <div class="card">
+            <div class="icon-wrapper">
+              <i class="fa-solid fa-gas-pump"></i>
+            </div>
+            <h3>Repostajes</h3>
+            <p>
+              Haz click aqui para ver la lista de repostajes
+            </p>
+          </div>
+        </div>
+
+        <script>
+            function irAUnidades() {
+              window.location.href = 'unidades.html';
+            }
+            function irAMantenimientos() {
+              window.location.href = 'mantenimientos.html';
+            }
+            function irARepostajes() {
+              window.location.href = 'app.html';
+            }
+          </script>
+     
+        
+       
+  
+      </div>
+    </section>
+  
+  
+  </body>
+  

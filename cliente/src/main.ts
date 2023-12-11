@@ -115,27 +115,23 @@ const newLocal = document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <meta charset="UTF-8">
 
 </head>
-<body class="bg-danger">
+<body ">
+<div class="col-8 mx-auto">
+  <form id="loginForm">
+    <h1 class="card-title text-center">Login</h1>
+    <label for="username">Username:</label>
+    <div>
+      <input class="form-control" type="text" id="username" name="username" required><br><br>
+    </div>
+    
+    <label for="password">Password:</label>
+    <div>
+      <input class="form-control" type="password" id="password" name="password" required><br><br>
+    </div>
 
-<div class="col-sm-8 ">
-
-   <form id="loginForm">
-        <h1 class="card-title text-center">Login</h1>
-        <label for="username">Username:</label>
-
-        <div>
-        <input class="form-control" type="text" id="username" name="username" required><br><br>
-        </div>
-        
-        <label for="password">Password:</label>
-
-        <div>
-        <input class="form-control" type="password" id="password" name="password" required><br><br>
-        </div>
-
-        <button type="submit" id="loginButton">Login</button>
-      </form>
-  </div>
+    <button type="submit" id="loginButton" class="btn btn-primary btn-block">Login</button>
+  </form>
+</div>
   
 </body>
 </html>

@@ -46,16 +46,17 @@
 
     .content {
       text-align: center;
-      height: 500%;
-      width: 500%;
+      height: auto; 
+  width: 800px;
       margin-top: 20px; 
     }
     .content2 {
       text-align: center;
-      height: 750vh;
-      width: 500%;
+      height: auto; 
+  width: 800px;
       margin-top: 20px; 
     }
+    
 
     #app,
     #dash {
@@ -87,7 +88,7 @@
     function mostrarContenido(id) {
       if (id === 'app') {
         // Redirige a app.html si se hace clic en "Mostrar App"
-        abrirNuevaPestana('app.html');
+        abrirNuevaPestana('menu.html');
         return;
       }
       function abrirNuevaPestana(url) {
