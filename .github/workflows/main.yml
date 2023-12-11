@@ -15,7 +15,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '18.17.1'
+
+      - name: server
+        run: cd GRUPALINTEGRACION/server/
+
 
       - name: Install production dependencies
         run: npm install --production
@@ -27,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build-artifact
-          path: /GRUPALINTEGRACION/server/
+          path: ./
 
       - name: Run tests
         run: npm test
