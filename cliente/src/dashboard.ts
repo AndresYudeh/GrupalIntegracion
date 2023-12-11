@@ -48,35 +48,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Asegúrate de que el elemento con el id 'dash' existe en tu HTML
 document.querySelector<HTMLDivElement>('#dash')!.innerHTML = `
-  <div style="display: flex; flex-direction: column; height: 50%; margin: 10%;">
-    <h1>Dashboard</h1>
-    <table id="reportTable" style="width: 60%; margin-top: 0%; margin-bottom: 10%;">
-      <thead>
-        <tr>
-          <th>ID del reporte</th>
-          <th>Fecha</th>
-          <th>Descripción</th>
-        </tr>
-      </thead>
-      <tbody id="reportTableBody">
-        <!-- Aquí se agregarán dinámicamente las filas de la tabla -->
-      </tbody>
-    </table>
-    <div class="dashboard" id="commentForm" style="display: none; width: 80%; margin-bottom: 10px;">
-      <div class="sidebar">
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/perfil">Perfil</a></li>
-        </ul>
-      </div>
-      <div class="content" style="text-align: center; margin: 10px;">
-        <h1>Dashboard</h1>
-        <p>Interfaz 1</p>
-      </div>
-      <button type="submit" onclick="showDiv2()" style="margin-top: 10px;">Login</button>
-      <div id="message" style="margin-top: 10px;"></div>
-    </div>
+<div class="dashboard-container" style="display: flex; flex-direction: column; height: 50%; margin: 10%;">
+<h1 class="dashboard-title">Dashboard</h1>
+<table class="dashboard-table" style="width: 60%; margin-top: 0%; margin-bottom: 10%;">
+  <thead>
+    <tr>
+      <th>ID del reporte</th>
+      <th>Fecha</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody class="dashboard-table-body" id="reportTableBody">
+    <!-- Aquí se agregarán dinámicamente las filas de la tabla -->
+  </tbody>
+</table>
+<div class="dashboard" id="commentForm" style="display: none; width: 80%; margin-bottom: 10px;">
+  <div class="dashboard-sidebar">
+    <ul>
+      <li><a href="/" class="dashboard-link">Home</a></li>
+      <li><a href="/perfil" class="dashboard-link">Perfil</a></li>
+    </ul>
   </div>
+  <div class="dashboard-content" style="text-align: center; margin: 10px;">
+    <h1>Dashboard</h1>
+    <p>Interfaz 1</p>
+  </div>
+  <button type="submit" onclick="showDiv2()" class="dashboard-button" style="margin-top: 10px;">Login</button>
+  <div id="message" class="dashboard-message" style="margin-top: 10px;"></div>
+</div>
+</div>
+
 `;
 
 

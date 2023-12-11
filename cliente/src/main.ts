@@ -113,16 +113,12 @@ const newLocal = document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+
 </head>
-<body class="bg-dark">
+<body class="bg-danger">
 
-<div class="col-sm-12 col-md-6 mx-auto mt-5">
+<div class="col-sm-8 ">
 
-  <div>
-    <div>
-    
-    </div>
-  </div>
    <form id="loginForm">
         <h1 class="card-title text-center">Login</h1>
         <label for="username">Username:</label>
@@ -137,12 +133,10 @@ const newLocal = document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         <input class="form-control" type="password" id="password" name="password" required><br><br>
         </div>
 
-        <button type="submit" >Login</button>
+        <button type="submit" id="loginButton">Login</button>
       </form>
   </div>
   
-
-  <script type="module" src="/main.js"></script>
 </body>
 </html>
 `;

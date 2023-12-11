@@ -14,17 +14,13 @@
 }
 
 body {
-  margin: 0;
-  font-family: var(--font-family);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 100vw;
-  min-height: 100vh;
-  background-color: var(--background-color);
-  color: var(--text-color);
-}
-
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #dc3545; /* Cambié a un tono de rojo para reflejar "bg-danger" de Bootstrap */
+        }
 a {
   font-weight: 500;
   color: #646cff;
@@ -45,10 +41,27 @@ h1 {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  background-color: #303030;
-  color: #fff;
+  background-color: #fff; /* Cambié a blanco para destacar sobre el fondo rojo */
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#loginForm {
+  margin-top: 20px;
+}
+#loginButton {
+  background-color: #dc3545;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#loginButton:hover {
+  background-color: #c82333; /* Cambio de tono al pasar el ratón sobre el botón */
 }
 
 .logo {
