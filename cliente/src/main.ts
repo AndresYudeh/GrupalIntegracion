@@ -10,31 +10,23 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 // Variable para controlar si el usuario ha iniciado sesión
 let usuarioAutenticado = false;
 
-// Establish a connection to the WebSocket server
-const socket = io('http://localhost:3000/'); // Replace localhost with your actual server address
 
-// Add event listeners for socket events
-socket.on('connect', () => {
-  console.log('Conectado al servidor WebSocket.');
-});
 
-socket.on('nuevoReporte', (nuevoReporte) => {
-  console.log('Nuevo reporte recibido:');
-  console.log('   ID del reporte:', nuevoReporte.REPORTE_ID);
-  console.log('   Fecha:', nuevoReporte.FECHA);
-  console.log('   Descripción:', nuevoReporte.DESCRIPCION);
-  console.log('');
-});
+// const socket = io('http://localhost:3000/'); // Replace localhost with your actual server address
 
-// async function obtenerDatosDesdeBackend() {
-//   try {
-//     const response = await axios.get('http://localhost:3000/repostaje/1'); // Reemplaza con la URL de tu backend
-//     console.log('Datos desde el backend:', response.data);
-//   } catch (error) {
-//     console.error('Error en la solicitud al backend:', error);
-//   }
-// }
-// obtenerDatosDesdeBackend();
+// socket.on('connect', () => {
+//   console.log('Conectado al servidor WebSocket.');
+// });
+
+// socket.on('nuevoReporte', (nuevoReporte) => {
+//   console.log('Nuevo reporte recibido:');
+//   console.log('   ID del reporte:', nuevoReporte.REPORTE_ID);
+//   console.log('   Fecha:', nuevoReporte.FECHA);
+//   console.log('   Descripción:', nuevoReporte.DESCRIPCION);
+//   console.log('');
+// });
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('loginForm');
@@ -83,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (messageDiv) {
               messageDiv.textContent = `Token: ${token}`;
-              console.log("Login successful. Token:", token);
+              console.log("Inicio de sesión con exito, su token es:", token);
             }
           } else {
             if (messageDiv) {
@@ -118,19 +110,22 @@ const newLocal = document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <body ">
 <div class="col-8 mx-auto">
   <form id="loginForm">
-    <h1 class="card-title text-center">Login</h1>
-    <label for="username">Username:</label>
+    <h1 class="card-title text-center">Bienvenido a ManKar</h1> <br>
+    <label for="username">Usuario:</label>
     <div>
       <input class="form-control" type="text" id="username" name="username" required><br><br>
     </div>
     
-    <label for="password">Password:</label>
+    <label for="password">Contraseña:</label>
     <div>
       <input class="form-control" type="password" id="password" name="password" required><br><br>
     </div>
+    <div id="message" style="color: red; margin-top: 10px;"></div>  <br>
 
-    <button type="submit" id="loginButton" class="btn btn-primary btn-block">Login</button>
+
+    <button type="submit" id="loginButton" class="btn btn-primary btn-block">Iniciar sesión</button>
   </form>
+
 </div>
   
 </body>

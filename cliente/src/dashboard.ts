@@ -69,9 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
 document.querySelector<HTMLDivElement>('#dash')!.innerHTML = `
 <body  >
 
-<button id="accesoBtn" class="btn btn-primary btn-lg mt-4">ACCESO A SISTEMA</button>
+<button id="accesoBtn" class="btn btn-primary btn-lg mt-4">Aplicación</button>
+<a href="/" id="accesoBtn" class="btn btn-danger btn-lg mt-4" style="margin-left: 15px;">Cerrar sesión</a>
 
- 
 
   <div class="dashboard-container" style="display: flex; flex-direction: column; height: 50%; margin: 10%;">
 
