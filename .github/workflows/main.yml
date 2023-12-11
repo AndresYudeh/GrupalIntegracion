@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: server
-        run: cd GRUPALINTEGRACION/server/
-        
       - uses: actions/checkout@v4
         with:
             sparse-checkout: .
@@ -22,7 +19,8 @@ jobs:
         with:
           node-version: '18.17.1'
 
-
+      - name: server
+        run:  server/package.json
 
 
       - name: Install production dependencies
