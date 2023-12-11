@@ -1,0 +1,295 @@
+<!-- app.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servicios CRUD</title>
+  <!-- Agrega aquí tus enlaces a CSS o cualquier otro recurso necesario -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    #navbar {
+      background-color: #333;
+      padding: 10px;
+      text-align: center;
+    }
+
+    #navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      display: inline-block;
+    }
+
+    #navbar .dropdown {
+      display: inline-block;
+      position: relative;
+    }
+
+    #navbar .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #555;
+      min-width: 160px;
+      z-index: 1;
+    }
+
+    #navbar .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    #formContainer {
+      margin-top: 60px;
+      padding: 20px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+    <a href="#" onclick="cargarpagRep('cargarpagRep')">Repostajes</a>
+    <a href="#" onclick="cargarpagMan('cargarpagUni')">Unidades</a>
+    <!-- <a href="#" onclick="cargarpagMan('cargarpagMan')">Mantenimientos</a> -->
+    <div class="dropdown" onclick="toggleDropdown('repostajesDropdown')">
+        <a href="#">Mantenimientos</a>
+        <div class="dropdown-content" id="repostajesDropdown">
+          <a href="#" onclick="mostrarForm('ver')">Ver</a>
+          <a href="#" onclick="mostrarForm('editar')">Editar</a>
+          <a href="#" onclick="mostrarForm('crear')">Crear</a>
+          <a href="#" onclick="mostrarForm('eliminar')">Eliminar</a>
+        </div>
+      </div>
+    <a href="#" onclick="regresar('regresar')">Regresar</a>
+  </nav>
+
+  <div id="formContainer">
+    <!-- Aquí se mostrarán dinámicamente los formularios -->
+  </div>
+
+  <script>
+    function regresar() {
+      window.close();
+    }
+    function cargarpagRep() {
+      window.location.href = `app.html`;
+    }
+    function cargarpagUni() {
+      window.location.href = `unidades.html`;
+    }
+    // function cargarpagMan() {
+    //   window.location.href = `mantenimientos.html`;
+    // }
+
+    function mostrarForm(tipo) {
+      const formContainer = document.getElementById('formContainer');
+      formContainer.innerHTML = ''; // Limpiar el contenedor antes de mostrar el nuevo formulario
+
+      switch (tipo) {
+
+        case 'ver':
+          formContainer.innerHTML = `
+          <div class="mantenimiento">
+            <h2>Buscar Mantenimientos por ID.</h2>
+
+            <input type="text" id="verManId" placeholder="ID del Mantenimiento">
+            <button type="button" onclick="verMantenimiento()">Ver</button>
+
+            <div class="datos-mantenimientos">
+              <p>Kilometraje anterior: <span id="MANTENIMIENTO_KMAC"></span></p>
+              <p>Kilometraje proximo: <span id="MANTENIMIENTO_KMPROX"></span></p>
+              <p>Comentario del mantenimiento : <span id="MANTENIMIENTO_COMENTARIO"></span></p>
+              <p>Fecha: <span id="FECHA"></span></p>
+              <p>Placa de la Unidad: <span id="UNIDADES_PLACA"></span></p>
+              <p>ID del tipo de mantenimiento: <span id="TIPOSMANTE_ID"></span></p>
+
+            </div>
+          </div>
+          `;
+          break;
+
+
+        case 'editar':
+          formContainer.innerHTML = `
+          <h2>Editar Mantenimientos</h2>
+
+          <form id="editarForm">
+
+          <label for="editarManteId" aria-label="ID del mantenimiento que se va a editar">ID del Mantenimiento:</label>
+          <input type="text" id="editarManteId" required>
+
+          <label for="MANTENIMIENTO_KMAC">MANTENIMIENTO_KMAC:</label>
+          <input type="text" id="MANTENIMIENTO_KMAC" required>
+
+          <label for="MANTENIMIENTO_KMPROX">MANTENIMIENTO_KMPROX:</label>
+          <input type="text" id="MANTENIMIENTO_KMPROX" required>
+
+          <label for="MANTENIMIENTO_COMENTARIO">MANTENIMIENTO_COMENTARIO:</label>
+          <input type="text" id="MANTENIMIENTO_COMENTARIO" required>
+
+          <label for="FECHA">FECHA:</label>
+          <input type="text" id="FECHA" required>
+
+          <label for="UNIDADES_PLACA">UNIDADES_PLACA:</label>
+          <input type="text" id="UNIDADES_PLACA" required>
+
+          <label for="TIPOSMANTE_ID">TIPOSMANTE_ID:</label>
+          <input type="text" id="TIPOSMANTE_ID" required>
+        
+
+          <button type="button" onclick="editarMante()">Editar Mantenimiento</button>
+
+          </form>
+          `;
+          break;
+
+
+        case 'crear':
+          formContainer.innerHTML = `
+          <div class="crear-mantenimiento">
+            <h2>Crear un nuevo mantenimiento.</h2>
+
+            <input type="text" id="MANTENIMIENTO_KMAC" placeholder="MANTENIMIENTO_KMAC">
+            <input type="text" id="MANTENIMIENTO_KMPROX" placeholder="MANTENIMIENTO_KMPROX">
+            <input type="text" id="MANTENIMIENTO_COMENTARIO" placeholder="MANTENIMIENTO_COMENTARIO">
+            <input type="text" id="FECHA" placeholder="FECHA">
+            <input type="text" id="UNIDADES_PLACA" placeholder="UNIDADES_PLACA">
+            <input type="text" id="TIPOSMANTE_ID" placeholder="TIPOSMANTE_ID">
+
+            <button type="button" onclick="crearMante()">Crear</button>
+          </div>
+          `;
+          break;
+
+
+
+        case 'eliminar':
+          formContainer.innerHTML = `
+            <h2>Eliminar Mantenimiento por ID.</h2>
+            <form id="eliminarForm">
+              <label>ID del Mantenimiento:</label>
+              <input type="number" id="eliminarManteId" required>
+              <button type="button" onclick="eliminarMante()">Eliminar Mantenimiento</button>
+            </form>
+          `;
+          break;
+        default:
+          console.error('Tipo de formulario no válido');
+      }
+    }
+
+    async function verMantenimiento() {
+
+      const manteId = document.getElementById('verManId').value;
+      const mantenimiento = await axios.get(`http://localhost:3000/mantenimientos/${manteId}`);
+
+      // const repostajes = res.data;
+
+      document.getElementById('MANTENIMIENTO_KMAC').textContent = mantenimiento.data.MANTENIMIENTO_KMAC;
+      document.getElementById('MANTENIMIENTO_KMPROX').textContent = mantenimiento.data.MANTENIMIENTO_KMPROX;
+      document.getElementById('MANTENIMIENTO_COMENTARIO').textContent = mantenimiento.data.MANTENIMIENTO_COMENTARIO;
+      document.getElementById('FECHA').textContent = mantenimiento.data.FECHA;
+      document.getElementById('UNIDADES_PLACA').textContent = mantenimiento.data.UNIDADES_PLACA;
+      document.getElementById('TIPOSMANTE_ID').textContent = mantenimiento.data.TIPOSMANTE_ID;
+
+    }
+
+    
+
+    
+    async function cargarListaRepostajes() {
+      try {
+        const response = await axios.get('http://localhost:3000/repostaje');
+        const repostajes = response.data;
+        const repostajesUl = document.createElement('ul');
+
+        repostajesUl.innerHTML = ''; // Limpiar la lista antes de agregar nuevos elementos
+
+        repostajes.forEach(repostaje => {
+          const li = document.createElement('li');
+          li.textContent = `ID: ${repostaje.REPOSTAJE_ID}, Comentario: ${repostaje.REPOSTAJE_COMENTARIO}`;
+          repostajesUl.appendChild(li);
+        });
+
+        document.getElementById('formContainer').appendChild(repostajesUl);
+      } catch (error) {
+        console.error('Error al cargar la lista de repostajes:', error);
+      }
+    }
+
+    async function editarMante() {
+      try {
+        const editarManteId = document.getElementById('editarManteId').value;
+
+        // Obtén los nuevos datos del formulario
+        const MANTENIMIENTO_KMAC = document.getElementById('MANTENIMIENTO_KMAC').value;
+        const MANTENIMIENTO_KMPROX = document.getElementById('MANTENIMIENTO_KMPROX').value;
+        const MANTENIMIENTO_COMENTARIO = document.getElementById('MANTENIMIENTO_COMENTARIO').value;
+        const FECHA = document.getElementById('FECHA').value;
+        const UNIDADES_PLACA = document.getElementById('UNIDADES_PLACA').value;
+        const TIPOSMANTE_ID = document.getElementById('TIPOSMANTE_ID').value;
+
+
+        // Construye el objeto con los nuevos datos, incluyendo el REPOSTAJE_ID
+        const nuevosDatos = {
+            MANTENIMIENTO_ID: editarManteId, // Agregamos el REPOSTAJE_ID
+            MANTENIMIENTO_KMAC,
+            MANTENIMIENTO_KMPROX,
+            MANTENIMIENTO_COMENTARIO,
+            FECHA,
+            UNIDADES_PLACA,
+            TIPOSMANTE_ID
+        };
+
+        // Realiza la solicitud PATCH con la URL completa y los datos en el cuerpo
+        console.log('Solicitud PATCH:', `http://localhost:3000/mantenimientos/${editarManteId}`, nuevosDatos);
+        const response = await axios.patch(`http://localhost:3000/mantenimientos/${editarManteId}`, nuevosDatos);
+
+      } catch (error) {
+        // Maneja cualquier error de red u otros errores
+        console.error('Error al editar el mantenimiento:', error);
+      }
+    }
+
+    async function crearMante() {
+    try {
+        const MANTENIMIENTO_KMAC = document.getElementById('MANTENIMIENTO_KMAC').value;
+        const MANTENIMIENTO_KMPROX = document.getElementById('MANTENIMIENTO_KMPROX').value;
+        const MANTENIMIENTO_COMENTARIO = document.getElementById('MANTENIMIENTO_COMENTARIO').value;
+        const FECHA = document.getElementById('FECHA').value;
+        const UNIDADES_PLACA = document.getElementById('UNIDADES_PLACA').value;
+        const TIPOSMANTE_ID = document.getElementById('TIPOSMANTE_ID').value;
+
+        const mantenimientos = {
+            MANTENIMIENTO_KMAC,
+            MANTENIMIENTO_KMPROX,
+            MANTENIMIENTO_COMENTARIO,
+            FECHA,
+            UNIDADES_PLACA,
+            TIPOSMANTE_ID
+        };
+
+        const res = await axios.post(`http://localhost:3000/mantenimientos/` ,mantenimientos);
+        console.log('Mantenimiento creada con éxito',mantenimientos.data);
+    } catch (error) {
+        console.error('Error al crear el mantenimiento:',  error.response ? error.response.data : error.message);
+    }}
+
+    async function eliminarMante() {
+      const manteId = document.getElementById('eliminarManteId').value;
+      // Elimina el repostaje utilizando la función eliminarRepostaje del archivo repostaje.ts
+      await axios.delete(`http://localhost:3000/mantenimientos/${manteId}`);
+      // Puedes realizar cualquier acción adicional después de eliminar el repostaje
+      console.log('Mantenimiento eliminado con éxito!');
+    }
+  </script>
+</body>
+</html>

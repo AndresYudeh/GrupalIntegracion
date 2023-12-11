@@ -1,0 +1,270 @@
+<!-- app.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servicios CRUD</title>
+  <!-- Agrega aquí tus enlaces a CSS o cualquier otro recurso necesario -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    #navbar {
+      background-color: #333;
+      padding: 10px;
+      text-align: center;
+    }
+
+    #navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      display: inline-block;
+    }
+
+    #navbar .dropdown {
+      display: inline-block;
+      position: relative;
+    }
+
+    #navbar .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #555;
+      min-width: 160px;
+      z-index: 1;
+    }
+
+    #navbar .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    #formContainer {
+      margin-top: 60px;
+      padding: 20px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+    <div class="dropdown" onclick="toggleDropdown('repostajesDropdown')">
+      <a href="#">Repostajes</a>
+      <div class="dropdown-content" id="repostajesDropdown">
+        <a href="#" onclick="mostrarForm('ver')">Ver</a>
+        <a href="#" onclick="mostrarForm('editar')">Editar</a>
+        <a href="#" onclick="mostrarForm('crear')">Crear</a>
+        <a href="#" onclick="mostrarForm('eliminar')">Eliminar</a>
+      </div>
+    </div>
+    <a href="#" onclick="cargarpagUni('cargarpagUni')">Unidades</a>
+    <a href="#" onclick="cargarpagMan('cargarpagMan')">Mantenimientos</a>
+    <a href="#" onclick="regresar('regresar')">Regresar</a>
+  </nav>
+
+  <div id="formContainer">
+    <!-- Aquí se mostrarán dinámicamente los formularios -->
+  </div>
+
+  <script>
+    function regresar() {
+      window.close();
+    }
+    function cargarpagUni() {
+      window.location.href = `unidades.html`;
+    }
+    function cargarpagMan() {
+      window.location.href = `mantenimientos.html`;
+    }
+
+    function mostrarForm(tipo) {
+      const formContainer = document.getElementById('formContainer');
+      formContainer.innerHTML = ''; // Limpiar el contenedor antes de mostrar el nuevo formulario
+
+      switch (tipo) {
+
+        case 'ver':
+          formContainer.innerHTML = `
+          <div class="repostaje">
+            <h2>Ver Repostaje</h2>
+
+            <input type="text" id="verRepostajeId" placeholder="ID del repostaje">
+            <button type="button" onclick="verRepostaje()">Ver</button>
+
+            <div class="datos-repostaje">
+              <p>Kilometraje Actual: <span id="REPOSTAJE_KMAC"></span></p>
+              <p>Comentario: <span id="REPOSTAJE_COMENTARIO"></span></p>
+              <p>Placa de la Unidad: <span id="UNIDADES_PLACA"></span></p>
+              <p>ID de la Ruta: <span id="RUTAS_ID"></span></p>
+            </div>
+          </div>
+          `;
+          break;
+
+
+        case 'editar':
+          formContainer.innerHTML = `
+          <h2>Editar Repostajes</h2>
+
+          <form id="editarForm">
+
+          <label for="editarRepostajeId" aria-label="ID del repostaje que se va a editar">ID del Repostaje:</label>
+          <input type="text" id="editarRepostajeId" required>
+
+          <label for="REPOSTAJE_KMAC">REPOSTAJE KMAC:</label>
+          <input type="text" id="REPOSTAJE_KMAC" required>
+
+          <label for="REPOSTAJE_COMENTARIO">REPOSTAJE COMENTARIO:</label>
+          <input type="text" id="REPOSTAJE_COMENTARIO" required>
+
+          <label for="UNIDADES_PLACA">UNIDADES PLACA:</label>
+          <input type="text" id="UNIDADES_PLACA" required>
+
+          <label for="RUTAS_ID">RUTAS ID:</label>
+          <input type="text" id="RUTAS_ID" required>
+
+
+          <button type="button" onclick="editarRepostaje()">Editar Repostaje</button>
+
+          </form>
+          `;
+          break;
+
+
+        case 'crear':
+          formContainer.innerHTML = `
+          <div class="crear-repostaje">
+          <h2>Crear Repostaje</h2>
+
+          <input type="text" id="REPOSTAJE_KMAC" placeholder="REPOSTAJE_KMAC">
+          <input type="text" id="REPOSTAJE_COMENTARIO" placeholder="REPOSTAJE_COMENTARIO">
+          <input type="text" id="UNIDADES_PLACA" placeholder="UNIDADES_PLACA">
+          <input type="text" id="RUTAS_ID" placeholder="RUTAS_ID">
+
+          <button type="button" onclick="crearRepostaje()">Crear</button>
+        </div>
+          `;
+          break;
+
+
+
+        case 'eliminar':
+          formContainer.innerHTML = `
+            <h2>Eliminar Repostajes</h2>
+            <form id="eliminarForm">
+              <label>ID del Repostaje:</label>
+              <input type="number" id="eliminarRepostajeId" required>
+              <button type="button" onclick="eliminarRepostaje()">Eliminar Repostaje</button>
+            </form>
+          `;
+          break;
+        default:
+          console.error('Tipo de formulario no válido');
+      }
+    }
+
+    async function verRepostaje() {
+
+      const repostajeId = document.getElementById('verRepostajeId').value;
+      const repostaje = await axios.get(`http://localhost:3000/repostaje/${repostajeId}`);
+
+      // const repostajes = res.data;
+
+      document.getElementById('REPOSTAJE_KMAC').textContent = repostaje.data.REPOSTAJE_KMAC;
+      document.getElementById('REPOSTAJE_COMENTARIO').textContent = repostaje.data.REPOSTAJE_COMENTARIO;
+      document.getElementById('UNIDADES_PLACA').textContent = repostaje.data.UNIDADES_PLACA;
+      document.getElementById('RUTAS_ID').textContent = repostaje.data.RUTAS_ID;
+    }
+
+    
+
+    
+    async function cargarListaRepostajes() {
+      try {
+        const response = await axios.get('http://localhost:3000/repostaje');
+        const repostajes = response.data;
+        const repostajesUl = document.createElement('ul');
+
+        repostajesUl.innerHTML = ''; // Limpiar la lista antes de agregar nuevos elementos
+
+        repostajes.forEach(repostaje => {
+          const li = document.createElement('li');
+          li.textContent = `ID: ${repostaje.REPOSTAJE_ID}, Comentario: ${repostaje.REPOSTAJE_COMENTARIO}`;
+          repostajesUl.appendChild(li);
+        });
+
+        document.getElementById('formContainer').appendChild(repostajesUl);
+      } catch (error) {
+        console.error('Error al cargar la lista de repostajes:', error);
+      }
+    }
+
+    async function editarRepostaje() {
+      try {
+        const editarRepostajeId = document.getElementById('editarRepostajeId').value;
+
+        // Obtén los nuevos datos del formulario
+        const REPOSTAJE_KMAC = document.getElementById('REPOSTAJE_KMAC').value;
+        const REPOSTAJE_COMENTARIO = document.getElementById('REPOSTAJE_COMENTARIO').value;
+        const UNIDADES_PLACA = document.getElementById('UNIDADES_PLACA').value;
+        const RUTAS_ID = document.getElementById('RUTAS_ID').value;
+
+        // Construye el objeto con los nuevos datos, incluyendo el REPOSTAJE_ID
+        const nuevosDatos = {
+          REPOSTAJE_ID: editarRepostajeId, // Agregamos el REPOSTAJE_ID
+          REPOSTAJE_KMAC,
+          REPOSTAJE_COMENTARIO,
+          UNIDADES_PLACA,
+          RUTAS_ID,
+        };
+
+        // Realiza la solicitud PATCH con la URL completa y los datos en el cuerpo
+        console.log('Solicitud PATCH:', `http://localhost:3000/repostaje/${editarRepostajeId}`, nuevosDatos);
+        const response = await axios.patch(`http://localhost:3000/repostaje/${editarRepostajeId}`, nuevosDatos);
+
+      } catch (error) {
+        // Maneja cualquier error de red u otros errores
+        console.error('Error al editar el repostaje:', error);
+      }
+    }
+
+    async function crearRepostaje() {
+    try {
+        const REPOSTAJE_KMAC = document.getElementById('REPOSTAJE_KMAC').value;
+        const REPOSTAJE_COMENTARIO = document.getElementById('REPOSTAJE_COMENTARIO').value;
+        const UNIDADES_PLACA = document.getElementById('UNIDADES_PLACA').value;
+        const RUTAS_ID = document.getElementById('RUTAS_ID').value;
+
+        const repostaje = {
+          REPOSTAJE_KMAC,
+          REPOSTAJE_COMENTARIO,
+          UNIDADES_PLACA,
+          RUTAS_ID
+        };
+
+        const res = await axios.post(`http://localhost:3000/repostaje/` ,repostaje);
+        console.log('Repostaje creado con éxito',repostaje.data);
+    } catch (error) {
+        console.error('Error al crear el repostaje:',  error.response ? error.response.data : error.message);
+    }}
+
+    
+
+    async function eliminarRepostaje() {
+      const repostajeId = document.getElementById('eliminarRepostajeId').value;
+      // Elimina el repostaje utilizando la función eliminarRepostaje del archivo repostaje.ts
+      await axios.delete(`http://localhost:3000/repostaje/${repostajeId}`);
+      // Puedes realizar cualquier acción adicional después de eliminar el repostaje
+      console.log('Repostaje eliminado con éxito');
+    }
+  </script>
+</body>
+</html>

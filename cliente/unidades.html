@@ -1,0 +1,298 @@
+<!-- app.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servicios CRUD</title>
+  <!-- Agrega aquí tus enlaces a CSS o cualquier otro recurso necesario -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    #navbar {
+      background-color: #333;
+      padding: 10px;
+      text-align: center;
+    }
+
+    #navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      display: inline-block;
+    }
+
+    #navbar .dropdown {
+      display: inline-block;
+      position: relative;
+    }
+
+    #navbar .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #555;
+      min-width: 160px;
+      z-index: 1;
+    }
+
+    #navbar .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    #formContainer {
+      margin-top: 60px;
+      padding: 20px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+    <a href="#" onclick="cargarpagRep('cargarpagRep')">Repostajes</a>
+    <div class="dropdown" onclick="toggleDropdown('repostajesDropdown')">
+      <a href="#">Unidades</a>
+      <div class="dropdown-content" id="repostajesDropdown">
+        <a href="#" onclick="mostrarForm('ver')">Ver</a>
+        <a href="#" onclick="mostrarForm('editar')">Editar</a>
+        <a href="#" onclick="mostrarForm('crear')">Crear</a>
+        <a href="#" onclick="mostrarForm('eliminar')">Eliminar</a>
+      </div>
+    </div>
+    <a href="#" onclick="cargarpagMan('cargarpagMan')">Mantenimientos</a>
+    <a href="#" onclick="regresar('regresar')">Regresar</a>
+  </nav>
+
+  <div id="formContainer">
+    <!-- Aquí se mostrarán dinámicamente los formularios -->
+  </div>
+
+  <script>
+    function regresar() {
+      window.close();
+    }
+    function cargarpagRep() {
+      window.location.href = `app.html`;
+    }
+    function cargarpagMan() {
+      window.location.href = `mantenimientos.html`;
+    }
+
+    function mostrarForm(tipo) {
+      const formContainer = document.getElementById('formContainer');
+      formContainer.innerHTML = ''; // Limpiar el contenedor antes de mostrar el nuevo formulario
+
+      switch (tipo) {
+
+        case 'ver':
+          formContainer.innerHTML = `
+          <div class="usuario">
+            <h2>Buscar Unidades por ID.</h2>
+
+            <input type="text" id="verUnidadId" placeholder="ID del usuario">
+            <button type="button" onclick="verUnidad()">Ver</button>
+
+            <div class="datos-usuarios">
+              <p>Placa de la Unidad: <span id="UNIDADES_PLACA"></span></p>
+              <p>Numero de la Unidad: <span id="NUMERO_UNIDAD"></span></p>
+              <p>ID de la Empresa: <span id="ID_EMPRESA"></span></p>
+              <p>Correo Electronico: <span id="CORREO"></span></p>
+              <p>Matricula: <span id="MATRICULA"></span></p>
+              <p>Año de la Unidad: <span id="ANIO"></span></p>
+            </div>
+          </div>
+          `;
+          break;
+
+
+        case 'editar':
+          formContainer.innerHTML = `
+          <h2>Editar Unidades</h2>
+
+          <form id="editarForm">
+
+          <label for="editarUnidadId" aria-label="ID de la unidad que se va a editar">ID de la Unidad:</label>
+          <input type="text" id="editarUnidadId" required>
+
+          <label for="UNIDADES_PLACA">UNIDADES_PLACA:</label>
+          <input type="text" id="UNIDADES_PLACA" required>
+
+          <label for="NUMERO_UNIDAD">NUMERO_UNIDAD:</label>
+          <input type="text" id="NUMERO_UNIDAD" required>
+
+          <label for="ID_EMPRESA">ID_EMPRESA:</label>
+          <input type="text" id="ID_EMPRESA" required>
+
+          <label for="CORREO">CORREO:</label>
+          <input type="text" id="CORREO" required>
+
+          <label for="COLOR">COLORsh:</label>
+          <input type="text" id="COLOR" required>
+
+          <label for="MATRICULA">MATRICULAsh:</label>
+          <input type="text" id="MATRICULA" required>
+
+          <label for="ANIO">Año:</label>
+          <input type="text" id="ANIO" required>
+
+        
+
+          <button type="button" onclick="editarUnidad()">Editar Unidad</button>
+
+          </form>
+          `;
+          break;
+
+
+        case 'crear':
+          formContainer.innerHTML = `
+          <div class="crear-unidad">
+            <h2>Crear nueva Unidad.</h2>
+
+            <input type="text" id="UNIDADES_PLACA" placeholder="UNIDADES_PLACA">
+            <input type="text" id="NUMERO_UNIDAD" placeholder="NUMERO_UNIDAD">
+            <input type="text" id="ID_EMPRESA" placeholder="ID_EMPRESA">
+            <input type="text" id="CORREO" placeholder="CORREO">
+            <input type="text" id="COLOR" placeholder="COLOR">
+            <input type="text" id="MATRICULA" placeholder="MATRICULA">
+            <input type="text" id="ANIO" placeholder="ANIO">
+
+            <button type="button" onclick="crearUnidad()">Crear</button>
+          </div>
+          `;
+          break;
+
+
+
+        case 'eliminar':
+          formContainer.innerHTML = `
+            <h2>Eliminar Unidad por ID.</h2>
+            <form id="eliminarForm">
+              <label>ID de la Unidad:</label>
+              <input type="number" id="eliminarUnidadId" required>
+              <button type="button" onclick="eliminarUnidad()">Eliminar Unidad</button>
+            </form>
+          `;
+          break;
+        default:
+          console.error('Tipo de formulario no válido');
+      }
+    }
+
+    async function verUnidad() {
+
+      const unidadesId = document.getElementById('verUnidadId').value;
+      const usuario = await axios.get(`http://localhost:3000/unidades/${unidadesId}`);
+
+      // const repostajes = res.data;
+
+      document.getElementById('UNIDADES_PLACA').textContent = usuario.data.UNIDADES_PLACA;
+      document.getElementById('NUMERO_UNIDAD').textContent = usuario.data.NUMERO_UNIDAD;
+      document.getElementById('ID_EMPRESA').textContent = usuario.data.ID_EMPRESA;
+      document.getElementById('CORREO').textContent = usuario.data.CORREO;
+      document.getElementById('MATRICULA').textContent = usuario.data.MATRICULA;
+      document.getElementById('ANIO').textContent = usuario.data.ANIO;
+
+    }
+
+    
+
+    
+    async function cargarListaRepostajes() {
+      try {
+        const response = await axios.get('http://localhost:3000/repostaje');
+        const repostajes = response.data;
+        const repostajesUl = document.createElement('ul');
+
+        repostajesUl.innerHTML = ''; // Limpiar la lista antes de agregar nuevos elementos
+
+        repostajes.forEach(repostaje => {
+          const li = document.createElement('li');
+          li.textContent = `ID: ${repostaje.REPOSTAJE_ID}, Comentario: ${repostaje.REPOSTAJE_COMENTARIO}`;
+          repostajesUl.appendChild(li);
+        });
+
+        document.getElementById('formContainer').appendChild(repostajesUl);
+      } catch (error) {
+        console.error('Error al cargar la lista de repostajes:', error);
+      }
+    }
+
+    async function editarUnidad() {
+      try {
+        const editarUnidadId = document.getElementById('editarUnidadId').value;
+
+        // Obtén los nuevos datos del formulario
+        const UNIDADES_PLACA = document.getElementById('UNIDADES_PLACA').value;
+        const NUMERO_UNIDAD = document.getElementById('NUMERO_UNIDAD').value;
+        const ID_EMPRESA = document.getElementById('ID_EMPRESA').value;
+        const CORREO = document.getElementById('CORREO').value;
+        const COLOR = document.getElementById('COLOR').value;
+        const MATRICULA = document.getElementById('MATRICULA').value;
+        const ANIO = document.getElementById('ANIO').value;
+
+        // Construye el objeto con los nuevos datos, incluyendo el REPOSTAJE_ID
+        const nuevosDatos = {
+          id: editarUnidadId, // Agregamos el REPOSTAJE_ID
+          UNIDADES_PLACA,
+          NUMERO_UNIDAD,
+          ID_EMPRESA,
+          CORREO,
+          COLOR,
+          MATRICULA,
+          ANIO
+        };
+
+        // Realiza la solicitud PATCH con la URL completa y los datos en el cuerpo
+        console.log('Solicitud PATCH:', `http://localhost:3000/unidades/${editarUnidadId}`, nuevosDatos);
+        const response = await axios.patch(`http://localhost:3000/unidades/${editarUnidadId}`, nuevosDatos);
+
+      } catch (error) {
+        // Maneja cualquier error de red u otros errores
+        console.error('Error al editar la unidad:', error);
+      }
+    }
+
+    async function crearUnidad() {
+    try {
+        const UNIDADES_PLACA = document.getElementById('UNIDADES_PLACA').value;
+        const NUMERO_UNIDAD = document.getElementById('NUMERO_UNIDAD').value;
+        const ID_EMPRESA = document.getElementById('ID_EMPRESA').value;
+        const CORREO = document.getElementById('CORREO').value;
+        const COLOR = document.getElementById('COLOR').value;
+        const MATRICULA = document.getElementById('MATRICULA').value;
+        const ANIO = document.getElementById('ANIO').value;
+
+        const unidades = {
+          UNIDADES_PLACA,
+          NUMERO_UNIDAD,
+          ID_EMPRESA,
+          CORREO,
+          COLOR,
+          MATRICULA,
+          ANIO
+        };
+
+        const res = await axios.post(`http://localhost:3000/unidades/` ,unidades);
+        console.log('Unidad creada con éxito',unidades.data);
+    } catch (error) {
+        console.error('Error al crear la unidad:',  error.response ? error.response.data : error.message);
+    }}
+
+    async function eliminarUnidad() {
+      const unidadId = document.getElementById('eliminarUnidadId').value;
+      // Elimina el repostaje utilizando la función eliminarRepostaje del archivo repostaje.ts
+      await axios.delete(`http://localhost:3000/unidades/${unidadId}`);
+      // Puedes realizar cualquier acción adicional después de eliminar el repostaje
+      console.log('Unidad eliminado con éxito');
+    }
+  </script>
+</body>
+</html>
