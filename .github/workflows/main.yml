@@ -27,10 +27,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build-artifact
-          path: |
-            dist/apps/ws-server/main.js
-            dist/apps/ws-server/package.json
-
+          path: ./
 
       - name: Run tests
         run: npm test
