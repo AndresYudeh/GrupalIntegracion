@@ -2,6 +2,11 @@ import './style.css';
 import { io } from 'socket.io-client';
 import axios, { AxiosError } from 'axios';
 
+// Importar estilos y scripts de Bootstrap
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
+
+
 // Variable para controlar si el usuario ha iniciado sesión
 let usuarioAutenticado = false;
 
@@ -104,21 +109,38 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+const newLocal = document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <html lang="en">
 <head>
   <meta charset="UTF-8">
 </head>
-<body>
+<body class="bg-dark">
 
-  <form id="loginForm">
-    <h1>Login</h1>
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required><br><br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required><br><br>
-    <button type="submit" >Login</button>
-  </form>
+<div class="col-sm-12 col-md-6 mx-auto mt-5">
+
+  <div>
+    <div>
+    
+    </div>
+  </div>
+   <form id="loginForm">
+        <h1 class="card-title text-center">Login</h1>
+        <label for="username">Username:</label>
+
+        <div>
+        <input class="form-control" type="text" id="username" name="username" required><br><br>
+        </div>
+        
+        <label for="password">Password:</label>
+
+        <div>
+        <input class="form-control" type="password" id="password" name="password" required><br><br>
+        </div>
+
+        <button type="submit" >Login</button>
+      </form>
+  </div>
+  
 
   <script type="module" src="/main.js"></script>
 </body>
