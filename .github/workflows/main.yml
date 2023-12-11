@@ -17,6 +17,10 @@ jobs:
         with:
           node-version: '18.17.1'
 
+      - name: server
+        run: cd GRUPALINTEGRACION/server/
+
+
       - name: Install production dependencies
         run: npm install --production
 
