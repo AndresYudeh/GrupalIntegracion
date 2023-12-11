@@ -48,11 +48,30 @@ socket.on('nuevoReporte', (nuevoReporte) => {
 document.addEventListener('DOMContentLoaded', () => {
   // No es necesario agregar contenido en este evento
 });
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const button = document.querySelector('#accesoBtn');
+    if (button) {
+      button.addEventListener('click', () => {
+        console.log('Clic en el botón');
+        window.location.href = 'menu.html';
+      });
+    } else {
+      console.error('No se encontró el botón con ID accesoBtn');
+    }
+  } catch (error) {
+    console.error('Error al agregar el event listener:', error);
+  }
+});
+
 
 // Asegúrate de que el elemento con el id 'dash' existe en tu HTML
 document.querySelector<HTMLDivElement>('#dash')!.innerHTML = `
 <body  >
 
+<button id="accesoBtn" class="btn btn-primary btn-lg mt-4">ACCESO A SISTEMA</button>
+
+ 
 
   <div class="dashboard-container" style="display: flex; flex-direction: column; height: 50%; margin: 10%;">
 
