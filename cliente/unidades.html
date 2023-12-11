@@ -7,7 +7,7 @@
   <title>Servicios CRUD</title>
   <!-- Agrega aquí tus enlaces a CSS o cualquier otro recurso necesario -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
   <link rel="stylesheet" type="text/css" href="./mantenimientos.css" th:href="@{/css/index.css}">
@@ -307,9 +307,21 @@
         // Realiza la solicitud PATCH con la URL completa y los datos en el cuerpo
         console.log('Solicitud PATCH:', `http://localhost:3000/unidades/${editarUnidadId}`, nuevosDatos);
         const response = await axios.patch(`http://localhost:3000/unidades/${editarUnidadId}`, nuevosDatos);
+        Swal.fire({
+          icon: 'success',
+          title: 'Unidad editada con éxito',
+          showConfirmButton: false,
+          timer: 1500  // La alerta se cerrará automáticamente después de 1.5 segundos
+        });
 
       } catch (error) {
         // Maneja cualquier error de red u otros errores
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al editar la unidad',
+          showConfirmButton: false,
+          timer: 1500  // La alerta se cerrará automáticamente después de 1.5 segundos
+        });
         console.error('Error al editar la unidad:', error);
       }
     }
@@ -336,7 +348,19 @@
 
         const res = await axios.post(`http://localhost:3000/unidades/` ,unidades);
         console.log('Unidad creada con éxito',unidades.data);
+        Swal.fire({
+          icon: 'success',
+          title: 'Unidad creada con éxito',
+          showConfirmButton: false,
+          timer: 1500  // La alerta se cerrará automáticamente después de 1.5 segundos
+        });
     } catch (error) {
+      Swal.fire({
+          icon: 'error',
+          title: 'Error al crear la unidad',
+          showConfirmButton: false,
+          timer: 1500  // La alerta se cerrará automáticamente después de 1.5 segundos
+        });
         console.error('Error al crear la unidad:',  error.response ? error.response.data : error.message);
     }}
 
@@ -346,6 +370,12 @@
       await axios.delete(`http://localhost:3000/unidades/${unidadId}`);
       // Puedes realizar cualquier acción adicional después de eliminar el repostaje
       console.log('Unidad eliminado con éxito');
+      Swal.fire({
+          icon: 'success',
+          title: 'Unidad eliminada con éxito',
+          showConfirmButton: false,
+          timer: 1500  // La alerta se cerrará automáticamente después de 1.5 segundos
+        });
     }
   </script>
 </body>
