@@ -9,3 +9,4 @@ export class UpdateMantenimientoInput extends PartialType(CreateMantenimientoInp
     @IsOptional()
     ESTADO?: boolean;
 }
+
