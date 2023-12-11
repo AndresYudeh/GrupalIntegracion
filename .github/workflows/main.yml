@@ -27,7 +27,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build-artifact
-          path: /home/runner/work/GrupalIntegracion/GrupalIntegracion/package.json
+          path: /GRUPALINTEGRACION/server/
 
       - name: Run tests
         run: npm test
