@@ -79,55 +79,87 @@
 
         case 'ver':
           formContainer.innerHTML = `
-          <div class="mantenimiento">
-            <h2>Buscar Mantenimientos por ID.</h2>
-
-            <input type="text" id="verManId" placeholder="ID del Mantenimiento">
-            <button type="button" onclick="verMantenimiento()">Ver</button>
-
-            <div class="datos-mantenimientos">
-              <p>Kilometraje anterior: <span id="MANTENIMIENTO_KMAC"></span></p>
-              <p>Kilometraje proximo: <span id="MANTENIMIENTO_KMPROX"></span></p>
-              <p>Comentario del mantenimiento : <span id="MANTENIMIENTO_COMENTARIO"></span></p>
-              <p>Fecha: <span id="FECHA"></span></p>
-              <p>Placa de la Unidad: <span id="UNIDADES_PLACA"></span></p>
-              <p>ID del tipo de mantenimiento: <span id="TIPOSMANTE_ID"></span></p>
-
+          <div class="container mt-5">
+            <div class="mx-auto text-center">
+              <h3 class="section-heading logo">BUSCAR MANTENIMIENTO POR ID</h3>
             </div>
+
+  <form >
+    <div class=" m-2">
+      <div class="row">
+        <div class="container mb-3">
+
+          <div class="mb-3">
+            <label for="verManId">ID del Mantenimiento:</label>
+            <input type="text" id="verManId" class="form-control" placeholder="ID del Mantenimiento">
           </div>
+
+          <button type="button" class="btn btn-primary" onclick="verMantenimiento()">Ver</button>
+
+          <div class="datos-mantenimientos mt-4">
+            <p>Kilometraje anterior: <span id="MANTENIMIENTO_KMAC"></span></p>
+            <p>Kilometraje próximo: <span id="MANTENIMIENTO_KMPROX"></span></p>
+            <p>Comentario del mantenimiento: <span id="MANTENIMIENTO_COMENTARIO"></span></p>
+            <p>Fecha: <span id="FECHA"></span></p>
+            <p>Placa de la Unidad: <span id="UNIDADES_PLACA"></span></p>
+            <p>ID del tipo de mantenimiento: <span id="TIPOSMANTE_ID"></span></p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
           `;
           break;
 
 
         case 'editar':
           formContainer.innerHTML = `
-          <h2>Editar Mantenimientos</h2>
+          <div class="container mt-5">
+            <div class="mx-auto text-center">
+              <h3 class="section-heading logo">EDITAR MANTENIMIENTO</h3>
+            </div>
 
           <form id="editarForm">
 
-          <label for="editarManteId" aria-label="ID del mantenimiento que se va a editar">ID del Mantenimiento:</label>
-          <input type="text" id="editarManteId" required>
+            <div class="mb-3">
+            <label for="editarManteId" aria-label="ID del mantenimiento que se va a editar">ID del Mantenimiento:</label>
+            <input type="text" id="editarManteId" class="form-control" required>
+          </div>
 
-          <label for="MANTENIMIENTO_KMAC">MANTENIMIENTO_KMAC:</label>
-          <input type="text" id="MANTENIMIENTO_KMAC" required>
+          <div class="mb-3">
+            <label for="MANTENIMIENTO_KMAC">MANTENIMIENTO_KMAC:</label>
+            <input type="text" id="MANTENIMIENTO_KMAC" class="form-control" required>
+          </div>
 
-          <label for="MANTENIMIENTO_KMPROX">MANTENIMIENTO_KMPROX:</label>
-          <input type="text" id="MANTENIMIENTO_KMPROX" required>
+          <div class="mb-3">
+            <label for="MANTENIMIENTO_KMPROX">MANTENIMIENTO_KMPROX:</label>
+            <input type="text" id="MANTENIMIENTO_KMPROX" class="form-control" required>
+          </div>
 
-          <label for="MANTENIMIENTO_COMENTARIO">MANTENIMIENTO_COMENTARIO:</label>
-          <input type="text" id="MANTENIMIENTO_COMENTARIO" required>
+          <div class="mb-3">
+            <label for="MANTENIMIENTO_COMENTARIO">MANTENIMIENTO_COMENTARIO:</label>
+            <input type="text" id="MANTENIMIENTO_COMENTARIO" class="form-control" required>
+          </div>
 
-          <label for="FECHA">FECHA:</label>
-          <input type="text" id="FECHA" required>
+          <div class="mb-3">
+            <label for="FECHA">FECHA:</label>
+            <input type="text" id="FECHA" class="form-control" required>
+          </div>
 
-          <label for="UNIDADES_PLACA">UNIDADES_PLACA:</label>
-          <input type="text" id="UNIDADES_PLACA" required>
+          <div class="mb-3">
+            <label for="UNIDADES_PLACA">UNIDADES_PLACA:</label>
+            <input type="text" id="UNIDADES_PLACA" class="form-control" required>
+          </div>
 
-          <label for="TIPOSMANTE_ID">TIPOSMANTE_ID:</label>
-          <input type="text" id="TIPOSMANTE_ID" required>
-        
+          <div class="mb-3">
+            <label for="TIPOSMANTE_ID">TIPOSMANTE_ID:</label>
+            <input type="text" id="TIPOSMANTE_ID" class="form-control" required>
+          </div>
 
-          <button type="button" onclick="editarMante()">Editar Mantenimiento</button>
+          <button type="button" class="btn btn-primary" onclick="editarMante()">Editar Mantenimiento</button>
+
 
           </form>
           `;
@@ -142,7 +174,7 @@
   </div>
 
   <div class="container-lg mb-8" id="services-cards" style="margin-top: 4rem;">
-    <div class="card m-2">
+    <div class=" m-2">
       <div class="row">
         <div class="container mb-3">
           <form>
@@ -193,12 +225,25 @@
 
         case 'eliminar':
           formContainer.innerHTML = `
-            <h2>Eliminar Mantenimiento por ID.</h2>
-            <form id="eliminarForm">
-              <label>ID del Mantenimiento:</label>
-              <input type="number" id="eliminarManteId" required>
-              <button type="button" onclick="eliminarMante()">Eliminar Mantenimiento</button>
+          <div class="container mt-5">
+            <div class="mx-auto text-center">
+              <h3 class="section-heading logo">ELIMINAR MANTENIMIENTO</h3>
+            </div>
+
+             <form id="eliminarForm">
+
+              <div class="mb-3">
+                <label for="IDMAN" class="form-label">ID del Mantenimiento:</label>
+                <div class="input-group">
+                  <input type="number" id="eliminarManteId" class="form-control small-input">
+                </div>
+              </div>
+
+              <div>
+                <button type="button" class="btn btn-primary" onclick="eliminarMante()">Eliminar Mantenimiento</button>
+              </div>
             </form>
+          </div>
           `;
           break;
         default:
