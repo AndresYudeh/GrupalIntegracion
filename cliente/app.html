@@ -80,64 +80,107 @@
 
         case 'ver':
           formContainer.innerHTML = `
-          <div class="repostaje">
-            <h2>Ver Repostaje</h2>
-
-            <input type="text" id="verRepostajeId" placeholder="ID del repostaje">
-            <button type="button" onclick="verRepostaje()">Ver</button>
-
-            <div class="datos-repostaje">
-              <p>Kilometraje Actual: <span id="REPOSTAJE_KMAC"></span></p>
-              <p>Comentario: <span id="REPOSTAJE_COMENTARIO"></span></p>
-              <p>Placa de la Unidad: <span id="UNIDADES_PLACA"></span></p>
-              <p>ID de la Ruta: <span id="RUTAS_ID"></span></p>
-            </div>
+          <div class="container mt-5">
+          <div class="mx-auto text-center">
+            <h3 class="section-heading logo">BUSCAR REPOSTAJE POR ID</h3>
           </div>
-          `;
+          <form>
+            <div class=" m-2">
+              <div class="row">
+                <div class="container mb-3">
+
+                  <div class="mb-3">
+                    <label for="verRepostajeId">ID del Repostaje:</label>
+                    <input type="text" id="verRepostajeId" class="form-control" placeholder="ID del Repostaje">
+                  </div>
+                  <button type="button" class="btn btn-primary" onclick="verRepostaje()">Ver</button>
+
+                  <div class="datos-repostajes mt-4">
+
+                    <p>Kilometraje Actual: <span id="REPOSTAJE_KMAC"></span></p>
+                      <p>Comentario: <span id="REPOSTAJE_COMENTARIO"></span></p>
+                      <p>Placa de la Unidad: <span id="UNIDADES_PLACA"></span></p>
+                      <p>ID de la Ruta: <span id="RUTAS_ID"></span></p>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>`;
           break;
 
 
         case 'editar':
           formContainer.innerHTML = `
-          <h2>Editar Repostajes</h2>
+          <div class="container mt-5">
+            <div class="mx-auto text-center">
+              <h3 class="section-heading logo">EDITAR REPOSTAJE</h3>
+            </div>
 
-          <form id="editarForm">
+            <form id="editarForm">
+              <div class="mb-3">
+                <label for="editarRepostajeId" aria-label="ID del repostaje que se va a editar">ID del Repostaje:</label>
+                <input type="text" id="editarRepostajeId" class="form-control" required>
+              </div>
 
-          <label for="editarRepostajeId" aria-label="ID del repostaje que se va a editar">ID del Repostaje:</label>
-          <input type="text" id="editarRepostajeId" required>
+              <div class="mb-3">
+                <label for="REPOSTAJE_KMAC">REPOSTAJE KMAC:</label>
+                <input type="text" id="REPOSTAJE_KMAC" class="form-control" required>
+              </div>
 
-          <label for="REPOSTAJE_KMAC">REPOSTAJE KMAC:</label>
-          <input type="text" id="REPOSTAJE_KMAC" required>
+              <div class="mb-3">
+                <label for="REPOSTAJE_COMENTARIO">REPOSTAJE COMENTARIO:</label>
+                <input type="text" id="REPOSTAJE_COMENTARIO" class="form-control" required>
+              </div>
 
-          <label for="REPOSTAJE_COMENTARIO">REPOSTAJE COMENTARIO:</label>
-          <input type="text" id="REPOSTAJE_COMENTARIO" required>
+              <div class="mb-3">
+                <label for="UNIDADES_PLACA">UNIDADES PLACA:</label>
+                <input type="text" id="UNIDADES_PLACA" class="form-control" required>
+              </div>
 
-          <label for="UNIDADES_PLACA">UNIDADES PLACA:</label>
-          <input type="text" id="UNIDADES_PLACA" required>
+              <div class="mb-3">
+                <label for="RUTAS_ID">RUTAS ID:</label>
+                <input type="text" id="RUTAS_ID" class="form-control" required>
+              </div>
 
-          <label for="RUTAS_ID">RUTAS ID:</label>
-          <input type="text" id="RUTAS_ID" required>
+              <button type="button" class="btn btn-primary" onclick="editarRepostaje()">Editar Repostaje</button>
 
-
-          <button type="button" onclick="editarRepostaje()">Editar Repostaje</button>
-
-          </form>
+            </form>
+          </div>
           `;
           break;
 
 
         case 'crear':
           formContainer.innerHTML = `
-          <div class="crear-repostaje">
-          <h2>Crear Repostaje</h2>
+          <div class="container mt-5">
+            <div class="mx-auto text-center">
+              <h3 class="section-heading logo">CREAR REPOSTAJE</h3>
+            </div>
 
-          <input type="text" id="REPOSTAJE_KMAC" placeholder="REPOSTAJE_KMAC">
-          <input type="text" id="REPOSTAJE_COMENTARIO" placeholder="REPOSTAJE_COMENTARIO">
-          <input type="text" id="UNIDADES_PLACA" placeholder="UNIDADES_PLACA">
-          <input type="text" id="RUTAS_ID" placeholder="RUTAS_ID">
+            <div class="mb-3">
+              <label for="REPOSTAJE_KMAC" class="form-label">REPOSTAJE_KMAC</label>
+              <input type="text" id="REPOSTAJE_KMAC" class="form-control" placeholder="REPOSTAJE_KMAC">
+            </div>
 
-          <button type="button" onclick="crearRepostaje()">Crear</button>
-        </div>
+            <div class="mb-3">
+              <label for="REPOSTAJE_COMENTARIO" class="form-label">REPOSTAJE_COMENTARIO</label>
+              <input type="text" id="REPOSTAJE_COMENTARIO" class="form-control" placeholder="REPOSTAJE_COMENTARIO">
+            </div>
+
+            <div class="mb-3">
+              <label for="UNIDADES_PLACA" class="form-label">UNIDADES_PLACA</label>
+              <input type="text" id="UNIDADES_PLACA" class="form-control" placeholder="UNIDADES_PLACA">
+            </div>
+
+            <div class="mb-3">
+              <label for="RUTAS_ID" class="form-label">RUTAS_ID</label>
+              <input type="text" id="RUTAS_ID" class="form-control" placeholder="RUTAS_ID">
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="crearRepostaje()">Crear</button>
+          </div>
           `;
           break;
 
@@ -145,12 +188,24 @@
 
         case 'eliminar':
           formContainer.innerHTML = `
-            <h2>Eliminar Repostajes</h2>
-            <form id="eliminarForm">
-              <label>ID del Repostaje:</label>
-              <input type="number" id="eliminarRepostajeId" required>
-              <button type="button" onclick="eliminarRepostaje()">Eliminar Repostaje</button>
-            </form>
+          <div class="container mt-5">
+  <div class="mx-auto text-center">
+    <h3 class="section-heading logo">ELIMINAR REPOSTAJE</h3>
+  </div>
+
+  <form id="eliminarForm">
+    <div class="mb-3">
+      <label for="eliminarRepostajeId" class="form-label">ID del Repostaje:</label>
+      <div class="input-group">
+        <input type="number" id="eliminarRepostajeId" class="form-control small-input" required>
+      </div>
+    </div>
+
+    <div>
+      <button type="button" class="btn btn-primary" onclick="eliminarRepostaje()">Eliminar Repostaje</button>
+    </div>
+  </form>
+</div>
           `;
           break;
         default:

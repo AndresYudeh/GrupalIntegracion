@@ -71,79 +71,143 @@
 
         case 'ver':
           formContainer.innerHTML = `
-          <div class="usuario">
-            <h2>Buscar Unidades por ID.</h2>
+          <div class="container mt-5">
+  <div class="mx-auto text-center">
+    <h3 class="section-heading logo">BUSCAR UNIDAD POR ID</h3>
+  </div>
 
-            <input type="text" id="verUnidadId" placeholder="ID del usuario">
-            <button type="button" onclick="verUnidad()">Ver</button>
+  <form>
+    <div class=" m-2">
+      <div class="row">
+        <div class="container mb-3">
 
-            <div class="datos-usuarios">
-              <p>Placa de la Unidad: <span id="UNIDADES_PLACA"></span></p>
-              <p>Numero de la Unidad: <span id="NUMERO_UNIDAD"></span></p>
-              <p>ID de la Empresa: <span id="ID_EMPRESA"></span></p>
-              <p>Correo Electronico: <span id="CORREO"></span></p>
-              <p>Matricula: <span id="MATRICULA"></span></p>
-              <p>Año de la Unidad: <span id="ANIO"></span></p>
-            </div>
+          <div class="mb-3">
+            <label for="verUnidadId">ID de la Unidad:</label>
+            <input type="text" id="verUnidadId" class="form-control" placeholder="ID de la Unidad">
           </div>
+
+          <button type="button" class="btn btn-primary" onclick="verUnidad()">Ver</button>
+
+          <div class="datos-usuarios mt-4">
+            <p>Placa de la Unidad: <span id="UNIDADES_PLACA"></span></p>
+            <p>Número de la Unidad: <span id="NUMERO_UNIDAD"></span></p>
+            <p>ID de la Empresa: <span id="ID_EMPRESA"></span></p>
+            <p>Correo Electrónico: <span id="CORREO"></span></p>
+            <p>Matrícula: <span id="MATRICULA"></span></p>
+            <p>Año de la Unidad: <span id="ANIO"></span></p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
           `;
           break;
 
 
         case 'editar':
           formContainer.innerHTML = `
-          <h2>Editar Unidades</h2>
+          <div class="container mt-5">
+  <div class="mx-auto text-center">
+    <h3 class="section-heading logo">EDITAR UNIDAD</h3>
+  </div>
 
-          <form id="editarForm">
+  <form id="editarForm">
+    <div class="mb-3">
+      <label for="editarUnidadId" aria-label="ID de la unidad que se va a editar">ID de la Unidad:</label>
+      <input type="text" id="editarUnidadId" class="form-control" required>
+    </div>
 
-          <label for="editarUnidadId" aria-label="ID de la unidad que se va a editar">ID de la Unidad:</label>
-          <input type="text" id="editarUnidadId" required>
+    <div class="mb-3">
+      <label for="UNIDADES_PLACA">UNIDADES_PLACA:</label>
+      <input type="text" id="UNIDADES_PLACA" class="form-control" required>
+    </div>
 
-          <label for="UNIDADES_PLACA">UNIDADES_PLACA:</label>
-          <input type="text" id="UNIDADES_PLACA" required>
+    <div class="mb-3">
+      <label for="NUMERO_UNIDAD">NUMERO_UNIDAD:</label>
+      <input type="text" id="NUMERO_UNIDAD" class="form-control" required>
+    </div>
 
-          <label for="NUMERO_UNIDAD">NUMERO_UNIDAD:</label>
-          <input type="text" id="NUMERO_UNIDAD" required>
+    <div class="mb-3">
+      <label for="ID_EMPRESA">ID_EMPRESA:</label>
+      <input type="text" id="ID_EMPRESA" class="form-control" required>
+    </div>
 
-          <label for="ID_EMPRESA">ID_EMPRESA:</label>
-          <input type="text" id="ID_EMPRESA" required>
+    <div class="mb-3">
+      <label for="CORREO">CORREO:</label>
+      <input type="text" id="CORREO" class="form-control" required>
+    </div>
 
-          <label for="CORREO">CORREO:</label>
-          <input type="text" id="CORREO" required>
+    <div class="mb-3">
+      <label for="COLOR">COLOR:</label>
+      <input type="text" id="COLOR" class="form-control" required>
+    </div>
 
-          <label for="COLOR">COLORsh:</label>
-          <input type="text" id="COLOR" required>
+    <div class="mb-3">
+      <label for="MATRICULA">MATRICULA:</label>
+      <input type="text" id="MATRICULA" class="form-control" required>
+    </div>
 
-          <label for="MATRICULA">MATRICULAsh:</label>
-          <input type="text" id="MATRICULA" required>
+    <div class="mb-3">
+      <label for="ANIO">Año:</label>
+      <input type="text" id="ANIO" class="form-control" required>
+    </div>
 
-          <label for="ANIO">Año:</label>
-          <input type="text" id="ANIO" required>
+    <button type="button" class="btn btn-primary" onclick="editarUnidad()">Editar Unidad</button>
 
-        
-
-          <button type="button" onclick="editarUnidad()">Editar Unidad</button>
-
-          </form>
+  </form>
+</div>
           `;
           break;
 
 
         case 'crear':
           formContainer.innerHTML = `
-          <div class="crear-unidad">
-            <h2>Crear nueva Unidad.</h2>
+          <div class="container mt-5">
+            <div class="mx-auto text-center">
+              <h3 class="section-heading logo">CREAR UNIDAD</h3>
+            </div>
 
-            <input type="text" id="UNIDADES_PLACA" placeholder="UNIDADES_PLACA">
-            <input type="text" id="NUMERO_UNIDAD" placeholder="NUMERO_UNIDAD">
-            <input type="text" id="ID_EMPRESA" placeholder="ID_EMPRESA">
-            <input type="text" id="CORREO" placeholder="CORREO">
-            <input type="text" id="COLOR" placeholder="COLOR">
-            <input type="text" id="MATRICULA" placeholder="MATRICULA">
-            <input type="text" id="ANIO" placeholder="ANIO">
+  <div class="mb-3">
+    <label for="UNIDADES_PLACA" class="form-label">UNIDADES_PLACA</label>
+    <input type="text" id="UNIDADES_PLACA" class="form-control" placeholder="UNIDADES_PLACA">
+  </div>
 
-            <button type="button" onclick="crearUnidad()">Crear</button>
-          </div>
+  <div class="mb-3">
+    <label for="NUMERO_UNIDAD" class="form-label">NUMERO_UNIDAD</label>
+    <input type="text" id="NUMERO_UNIDAD" class="form-control" placeholder="NUMERO_UNIDAD">
+  </div>
+
+  <div class="mb-3">
+    <label for="ID_EMPRESA" class="form-label">ID_EMPRESA</label>
+    <input type="text" id="ID_EMPRESA" class="form-control" placeholder="ID_EMPRESA">
+  </div>
+
+  <div class="mb-3">
+    <label for="CORREO" class="form-label">CORREO</label>
+    <input type="text" id="CORREO" class="form-control" placeholder="CORREO">
+  </div>
+
+  <div class="mb-3">
+    <label for="COLOR" class="form-label">COLOR</label>
+    <input type="text" id="COLOR" class="form-control" placeholder="COLOR">
+  </div>
+
+  <div class="mb-3">
+    <label for="MATRICULA" class="form-label">MATRICULA</label>
+    <input type="text" id="MATRICULA" class="form-control" placeholder="MATRICULA">
+  </div>
+
+  <div class="mb-3">
+    <label for="ANIO" class="form-label">ANIO</label>
+    <input type="text" id="ANIO" class="form-control" placeholder="ANIO">
+  </div>
+
+  <button type="button" class="btn btn-primary" onclick="crearUnidad()">Crear</button>
+</div>
+
           `;
           break;
 
@@ -151,12 +215,24 @@
 
         case 'eliminar':
           formContainer.innerHTML = `
-            <h2>Eliminar Unidad por ID.</h2>
-            <form id="eliminarForm">
-              <label>ID de la Unidad:</label>
-              <input type="number" id="eliminarUnidadId" required>
-              <button type="button" onclick="eliminarUnidad()">Eliminar Unidad</button>
-            </form>
+          <div class="container mt-5">
+  <div class="mx-auto text-center">
+    <h3 class="section-heading logo">ELIMINAR UNIDAD</h3>
+  </div>
+
+  <form id="eliminarForm">
+    <div class="mb-3">
+      <label for="eliminarUnidadId" class="form-label">ID de la Unidad:</label>
+      <div class="input-group">
+        <input type="number" id="eliminarUnidadId" class="form-control small-input" required>
+      </div>
+    </div>
+
+    <div>
+      <button type="button" class="btn btn-primary" onclick="eliminarUnidad()">Eliminar Unidad</button>
+    </div>
+  </form>
+</div>
           `;
           break;
         default:
