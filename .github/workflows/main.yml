@@ -18,8 +18,17 @@ jobs:
         with:
           node-version: '18.17.1'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install production dependencies
+        run: npm install --production
 
       - name: Build project
         run: npm run build
+
+      - name: Deploy to server
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: dist/apps/ws-server
+
+      - name: Run tests
+        run: npm test
