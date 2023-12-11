@@ -247,6 +247,12 @@
         document.getElementById('formContainer').appendChild(repostajesUl);
       } catch (error) {
         console.error('Error al cargar la lista de repostajes:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al cargar repostaje',
+          showConfirmButton: false,
+          timer: 1500  // La alerta se cerrará automáticamente después de 1.5 segundos
+        });
       }
     }
 
@@ -272,9 +278,21 @@
         // Realiza la solicitud PATCH con la URL completa y los datos en el cuerpo
         console.log('Solicitud PATCH:', `http://localhost:3000/repostaje/${editarRepostajeId}`, nuevosDatos);
         const response = await axios.patch(`http://localhost:3000/repostaje/${editarRepostajeId}`, nuevosDatos);
+        Swal.fire({
+          icon: 'success',
+          title: 'Registro editado con éxito',
+          showConfirmButton: false,
+          timer: 1500  // La alerta se cerrará automáticamente después de 1.5 segundos
+        });
 
       } catch (error) {
         // Maneja cualquier error de red u otros errores
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al editar registro',
+          showConfirmButton: false,
+          timer: 1500  // La alerta se cerrará automáticamente después de 1.5 segundos
+        });
         console.error('Error al editar el repostaje:', error);
       }
     }
@@ -295,7 +313,19 @@
 
         const res = await axios.post(`http://localhost:3000/repostaje/` ,repostaje);
         console.log('Repostaje creado con éxito',repostaje.data);
+        Swal.fire({
+          icon: 'success',
+          title: 'Repostaje creado con éxito',
+          showConfirmButton: false,
+          timer: 1500  // La alerta se cerrará automáticamente después de 1.5 segundos
+        });
     } catch (error) {
+      Swal.fire({
+          icon: 'error',
+          title: 'Error al crear el registro',
+          showConfirmButton: false,
+          timer: 1500  // La alerta se cerrará automáticamente después de 1.5 segundos
+        });
         console.error('Error al crear el repostaje:',  error.response ? error.response.data : error.message);
     }}
 
@@ -307,6 +337,12 @@
       await axios.delete(`http://localhost:3000/repostaje/${repostajeId}`);
       // Puedes realizar cualquier acción adicional después de eliminar el repostaje
       console.log('Repostaje eliminado con éxito');
+      Swal.fire({
+          icon: 'success',
+          title: 'Registro eliminado con éxito',
+          showConfirmButton: false,
+          timer: 1500  // La alerta se cerrará automáticamente después de 1.5 segundos
+        });
     }
   </script>
 </body>
