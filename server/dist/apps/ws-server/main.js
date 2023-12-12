@@ -1667,7 +1667,7 @@ let RepostajeService = class RepostajeService {
         try {
             const repostaje = this.repostajeRepository.create(createRepostajeInput);
             await this.repostajeRepository.save(repostaje);
-            await this.sendDiscordWebhook(repostaje);
+            await this.sendDiscordWebhook(repostaje, 1);
             return repostaje;
         }
         catch (error) {
@@ -1679,12 +1679,33 @@ let RepostajeService = class RepostajeService {
             throw new common_1.InternalServerErrorException('Error no esperado');
         }
     }
-    async sendDiscordWebhook(repostaje, visualizado = false) {
+    async sendDiscordWebhook(repostaje, caso, repostajeAntiguo) {
         const webhookUrl = 'https://discord.com/api/webhooks/1183932463865675846/whny6WLDgnFy36g0gC4yhavYhtVlaCfKzd6YzftkZ9WRJGi9783zAPEnkxfbZqqMwWP1';
         try {
-            let mensaje = `\`\`\`Nuevo repostaje creado:\nID: ${repostaje.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}\`\`\``;
-            if (visualizado) {
-                mensaje = `\`\`\`Repostaje Visualizado:\nID: ${repostaje.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}\`\`\``;
+            let mensaje;
+            switch (caso) {
+                case 1:
+                    mensaje = `\`\`\`Nuevo repostaje creado:\nID: ${repostaje.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}\`\`\``;
+                    break;
+                case 2:
+                    mensaje = `\`\`\`Repostaje visualizado recientemente:\nID: ${repostaje.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}\`\`\``;
+                    break;
+                case 3:
+                    mensaje = `\`\`\`Repostaje eliminado:\nID: ${repostajeAntiguo.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}\`\`\``;
+                    break;
+                default:
+                    mensaje = `Repostaje actualizado recientemente:\nID: ${repostaje.REPOSTAJE_ID}\n`;
+                    if (repostajeAntiguo) {
+                        for (const key in repostajeAntiguo) {
+                            if (repostajeAntiguo.hasOwnProperty(key) && key !== 'REPOSTAJE_ID') {
+                                const valorAntiguo = repostajeAntiguo[key];
+                                const valorNuevo = repostaje[key];
+                                if (valorAntiguo !== valorNuevo) {
+                                    mensaje += `${key}: ${valorAntiguo} -> ${valorNuevo}\n`;
+                                }
+                            }
+                        }
+                    }
             }
             const payload = {
                 content: mensaje,
@@ -1704,17 +1725,19 @@ let RepostajeService = class RepostajeService {
         if (!repostaje) {
             throw new common_1.NotFoundException(`Repostaje ${REPOSTAJE_ID} no encontrado`);
         }
-        await this.sendDiscordWebhook(repostaje, true);
+        await this.sendDiscordWebhook(repostaje, 2);
         return repostaje;
     }
     async update(REPOSTAJE_ID, updateRepostajeInput) {
         console.log('ID del repostaje a actualizar en el servicio back:', REPOSTAJE_ID);
         try {
+            const repostajeAntiguo = await this.repostajeRepository.findOne({ where: { REPOSTAJE_ID } });
             const updateResult = await this.repostajeRepository.update(REPOSTAJE_ID, updateRepostajeInput);
             if (updateResult.affected === 0) {
                 throw new common_1.NotFoundException(`Repostaje con ID ${REPOSTAJE_ID} no encontrado`);
             }
             const repostaje = await this.repostajeRepository.findOne({ where: { REPOSTAJE_ID } });
+            await this.sendDiscordWebhook(repostaje, 0, repostajeAntiguo);
             return repostaje;
         }
         catch (error) {
@@ -1723,8 +1746,10 @@ let RepostajeService = class RepostajeService {
         }
     }
     async remove(REPOSTAJE_ID) {
-        const repostaje = await this.findOne(REPOSTAJE_ID);
+        const repostaje = await this.repostajeRepository.findOneBy({ REPOSTAJE_ID });
+        const repostajeAntiguo = { ...repostaje };
         await this.repostajeRepository.remove(repostaje);
+        await this.sendDiscordWebhook(repostaje, 3, repostajeAntiguo);
         return `This action removes a #${REPOSTAJE_ID} repostaje`;
     }
 };
