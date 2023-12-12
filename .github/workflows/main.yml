@@ -20,7 +20,7 @@ jobs:
           node-version: '18.17.1'
 
       - name: server
-        run:  cd server/package.json
+        run:  cd server
 
 
       - name: Install production dependencies
