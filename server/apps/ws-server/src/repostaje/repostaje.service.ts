@@ -31,17 +31,17 @@ export class RepostajeService {
   //   // return 'This action adds a new repostaje';
   // }
 
-  async create(createRepostajeInput: CreateRepostajeInput): Promise<any>  {
+  async create(createRepostajeInput: CreateRepostajeInput): Promise<any> {
     try {
       const repostaje = this.repostajeRepository.create(createRepostajeInput);
       await this.repostajeRepository.save(repostaje);
-
-      // Envía el webhook a Discord después de guardar el repostaje
+  
+      // Envía el webhook a Discord después de guardar el repostaje (creación)
       await this.sendDiscordWebhook(repostaje);
-
+  
       return repostaje;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (error.code === '23505') {
         throw new BadRequestException(error.detail);
       }
@@ -50,14 +50,18 @@ export class RepostajeService {
     }
   }
 
-  async sendDiscordWebhook(repostaje: Repostaje) {
+  async sendDiscordWebhook(repostaje: Repostaje, visualizado: boolean = false) {
     const webhookUrl = 'https://discord.com/api/webhooks/1183932463865675846/whny6WLDgnFy36g0gC4yhavYhtVlaCfKzd6YzftkZ9WRJGi9783zAPEnkxfbZqqMwWP1';
-
+  
     try {
+      let mensaje = `\`\`\`Nuevo repostaje creado:\nID: ${repostaje.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}\`\`\``;  
+      if (visualizado) {
+        mensaje = `\`\`\`Repostaje Visualizado:\nID: ${repostaje.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}\`\`\``;      }
+  
       const payload = {
-        content: `Nuevo repostaje creado:\nID: ${repostaje.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}`,
+        content: mensaje,
       };
-
+  
       await axios.post(webhookUrl, payload);
       console.log('Webhook a Discord enviado con éxito');
     } catch (error) {
@@ -69,10 +73,22 @@ export class RepostajeService {
     return `Busca algo mas especifico flaco`;
   }
 
+  // async findOne(REPOSTAJE_ID: number): Promise<Repostaje> {
+  //   const repostaje= await  this.repostajeRepository.findOneBy ({ REPOSTAJE_ID });
+  //   if(!repostaje)
+  //     throw new NotFoundException(`Repostaje ${REPOSTAJE_ID} no encontrado`);
+  //   return repostaje;
+  // }
+
   async findOne(REPOSTAJE_ID: number): Promise<Repostaje> {
-    const repostaje= await  this.repostajeRepository.findOneBy ({ REPOSTAJE_ID });
-    if(!repostaje)
+    const repostaje = await this.repostajeRepository.findOneBy({ REPOSTAJE_ID });
+    if (!repostaje) {
       throw new NotFoundException(`Repostaje ${REPOSTAJE_ID} no encontrado`);
+    }
+  
+    // Envía el webhook a Discord después de visualizar el repostaje
+    await this.sendDiscordWebhook(repostaje, true);
+  
     return repostaje;
   }
 
@@ -111,3 +127,4 @@ export class RepostajeService {
   }
 
 }
+

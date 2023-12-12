@@ -1679,11 +1679,15 @@ let RepostajeService = class RepostajeService {
             throw new common_1.InternalServerErrorException('Error no esperado');
         }
     }
-    async sendDiscordWebhook(repostaje) {
+    async sendDiscordWebhook(repostaje, visualizado = false) {
         const webhookUrl = 'https://discord.com/api/webhooks/1183932463865675846/whny6WLDgnFy36g0gC4yhavYhtVlaCfKzd6YzftkZ9WRJGi9783zAPEnkxfbZqqMwWP1';
         try {
+            let mensaje = `\`\`\`Nuevo repostaje creado:\nID: ${repostaje.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}\`\`\``;
+            if (visualizado) {
+                mensaje = `\`\`\`Repostaje Visualizado:\nID: ${repostaje.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}\`\`\``;
+            }
             const payload = {
-                content: `Nuevo repostaje creado:\nID: ${repostaje.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}`,
+                content: mensaje,
             };
             await axios_1.default.post(webhookUrl, payload);
             console.log('Webhook a Discord enviado con éxito');
@@ -1697,8 +1701,10 @@ let RepostajeService = class RepostajeService {
     }
     async findOne(REPOSTAJE_ID) {
         const repostaje = await this.repostajeRepository.findOneBy({ REPOSTAJE_ID });
-        if (!repostaje)
+        if (!repostaje) {
             throw new common_1.NotFoundException(`Repostaje ${REPOSTAJE_ID} no encontrado`);
+        }
+        await this.sendDiscordWebhook(repostaje, true);
         return repostaje;
     }
     async update(REPOSTAJE_ID, updateRepostajeInput) {
