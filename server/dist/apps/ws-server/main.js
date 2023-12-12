@@ -82,7 +82,11 @@ const unidade_entity_1 = __webpack_require__(/*! ./unidades/entities/unidade.ent
 const usuario_entity_1 = __webpack_require__(/*! ./usuarios/entities/usuario.entity */ "./apps/ws-server/src/usuarios/entities/usuario.entity.ts");
 const mantenimientos_module_1 = __webpack_require__(/*! ./mantenimientos/mantenimientos.module */ "./apps/ws-server/src/mantenimientos/mantenimientos.module.ts");
 const mantenimiento_entity_1 = __webpack_require__(/*! ./mantenimientos/entities/mantenimiento.entity */ "./apps/ws-server/src/mantenimientos/entities/mantenimiento.entity.ts");
+const edge_analytics_middleware_1 = __webpack_require__(/*! ./middleware/edge-analytics.middleware */ "./apps/ws-server/src/middleware/edge-analytics.middleware.ts");
 let AppModule = class AppModule {
+    configure(consumer) {
+        consumer.apply(edge_analytics_middleware_1.EdgeAnalyticsMiddleware).forRoutes('*');
+    }
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
@@ -667,6 +671,57 @@ exports.MantenimientosService = MantenimientosService = __decorate([
     __param(0, (0, typeorm_2.InjectRepository)(mantenimiento_entity_1.Mantenimiento)),
     __metadata("design:paramtypes", [typeof (_a = typeof typeorm_1.Repository !== "undefined" && typeorm_1.Repository) === "function" ? _a : Object])
 ], MantenimientosService);
+
+
+/***/ }),
+
+/***/ "./apps/ws-server/src/middleware/edge-analytics.middleware.ts":
+/*!********************************************************************!*\
+  !*** ./apps/ws-server/src/middleware/edge-analytics.middleware.ts ***!
+  \********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.EdgeAnalyticsMiddleware = void 0;
+const randomNumber = Math.random();
+console.log(randomNumber);
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+let EdgeAnalyticsMiddleware = class EdgeAnalyticsMiddleware {
+    use(req, res, next) {
+        console.log('Middleware ejecutándose para:', req.url);
+        if (req.url.includes('/unidades')) {
+            const startTime = Date.now();
+            res.on('finish', () => {
+                const endTime = Date.now();
+                const loadTime = endTime - startTime;
+                if (!req['analyticsData']) {
+                    req['analyticsData'] = {};
+                }
+                req['analyticsData'] = {
+                    ...req['analyticsData'],
+                    path: req.url,
+                    loadTime: loadTime,
+                };
+                console.log('Datos de análisis almacenados:', req['analyticsData']);
+            });
+        }
+        next();
+    }
+    sendAnalyticsData(data) {
+        console.log('Datos de análisis:', data);
+    }
+};
+exports.EdgeAnalyticsMiddleware = EdgeAnalyticsMiddleware;
+exports.EdgeAnalyticsMiddleware = EdgeAnalyticsMiddleware = __decorate([
+    (0, common_1.Injectable)()
+], EdgeAnalyticsMiddleware);
 
 
 /***/ }),

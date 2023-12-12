@@ -1,5 +1,5 @@
 import { ReportesGateway } from './reportes/reportes.gateway';
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RepostajeModule } from './repostaje/repostaje.module';
@@ -23,6 +23,8 @@ import { Unidade } from './unidades/entities/unidade.entity';
 import { Usuario } from './usuarios/entities/usuario.entity';
 import { MantenimientosModule } from './mantenimientos/mantenimientos.module';
 import { Mantenimiento } from './mantenimientos/entities/mantenimiento.entity';
+
+import { EdgeAnalyticsMiddleware } from './middleware/edge-analytics.middleware';
 
 
 
@@ -58,4 +60,8 @@ import { Mantenimiento } from './mantenimientos/entities/mantenimiento.entity';
   providers: [
     ReportesGateway, AppService],
 })
-export class AppModule { }
+export class AppModule implements NestModule { 
+  configure(consumer: MiddlewareConsumer){
+    consumer.apply(EdgeAnalyticsMiddleware).forRoutes('*');
+  }
+}
