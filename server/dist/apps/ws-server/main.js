@@ -1657,6 +1657,7 @@ const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const repostaje_entity_1 = __webpack_require__(/*! ./entities/repostaje.entity */ "./apps/ws-server/src/repostaje/entities/repostaje.entity.ts");
 const typeorm_1 = __webpack_require__(/*! typeorm */ "typeorm");
 const typeorm_2 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const axios_1 = __webpack_require__(/*! axios */ "axios");
 let RepostajeService = class RepostajeService {
     constructor(repostajeRepository) {
         this.repostajeRepository = repostajeRepository;
@@ -1666,14 +1667,29 @@ let RepostajeService = class RepostajeService {
         try {
             const repostaje = this.repostajeRepository.create(createRepostajeInput);
             await this.repostajeRepository.save(repostaje);
+            await this.sendDiscordWebhook(repostaje);
             return repostaje;
         }
         catch (error) {
             console.log(error);
-            if (error.code === '23505')
+            if (error.code === '23505') {
                 throw new common_1.BadRequestException(error.detail);
+            }
             this.logger.error(error);
             throw new common_1.InternalServerErrorException('Error no esperado');
+        }
+    }
+    async sendDiscordWebhook(repostaje) {
+        const webhookUrl = 'https://discord.com/api/webhooks/1183932463865675846/whny6WLDgnFy36g0gC4yhavYhtVlaCfKzd6YzftkZ9WRJGi9783zAPEnkxfbZqqMwWP1';
+        try {
+            const payload = {
+                content: `Nuevo repostaje creado:\nID: ${repostaje.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}`,
+            };
+            await axios_1.default.post(webhookUrl, payload);
+            console.log('Webhook a Discord enviado con éxito');
+        }
+        catch (error) {
+            console.error('Error al enviar el webhook a Discord:', error.message);
         }
     }
     findAll() {

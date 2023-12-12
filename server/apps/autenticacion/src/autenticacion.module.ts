@@ -15,6 +15,8 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './autenticacion.service';
+import { WebhookService } from './webhook.service';
+
 import { AuthController } from './autenticacion.controller';
 
 @Module({
@@ -24,7 +26,7 @@ import { AuthController } from './autenticacion.controller';
       signOptions: { expiresIn: '1m' },
     }),
   ],
-  providers: [AuthService],
+  providers: [AuthService, WebhookService],
   controllers: [AuthController],
 })
 export class AuthModule {}

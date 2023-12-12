@@ -75,6 +75,7 @@ exports.AuthModule = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const jwt_1 = __webpack_require__(/*! @nestjs/jwt */ "@nestjs/jwt");
 const autenticacion_service_1 = __webpack_require__(/*! ./autenticacion.service */ "./apps/autenticacion/src/autenticacion.service.ts");
+const webhook_service_1 = __webpack_require__(/*! ./webhook.service */ "./apps/autenticacion/src/webhook.service.ts");
 const autenticacion_controller_1 = __webpack_require__(/*! ./autenticacion.controller */ "./apps/autenticacion/src/autenticacion.controller.ts");
 let AuthModule = class AuthModule {
 };
@@ -87,7 +88,7 @@ exports.AuthModule = AuthModule = __decorate([
                 signOptions: { expiresIn: '1m' },
             }),
         ],
-        providers: [autenticacion_service_1.AuthService],
+        providers: [autenticacion_service_1.AuthService, webhook_service_1.WebhookService],
         controllers: [autenticacion_controller_1.AuthController],
     })
 ], AuthModule);
@@ -111,14 +112,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var _a;
+var _a, _b;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthService = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const jwt_1 = __webpack_require__(/*! @nestjs/jwt */ "@nestjs/jwt");
+const webhook_service_1 = __webpack_require__(/*! ./webhook.service */ "./apps/autenticacion/src/webhook.service.ts");
 let AuthService = class AuthService {
-    constructor(jwtService) {
+    constructor(jwtService, webhookService) {
         this.jwtService = jwtService;
+        this.webhookService = webhookService;
     }
     async generateToken(payload) {
         return this.jwtService.sign(payload);
@@ -134,6 +137,14 @@ let AuthService = class AuthService {
             return null;
         }
     }
+    async notifyDiscordLoginAttempt(username, success) {
+        const eventType = success ? 'login_exitoso' : 'login_fallido';
+        const payload = {
+            username,
+            success,
+        };
+        await this.webhookService.sendDiscordWebhook(eventType, payload);
+    }
     async validateUser(credentials) {
         const users = [
             { id: 1, username: 'Andres', password: 'admin123' }
@@ -141,9 +152,11 @@ let AuthService = class AuthService {
         const { username, password } = credentials;
         const user = users.find(u => u.username === username && u.password === password);
         if (user) {
+            await this.notifyDiscordLoginAttempt(user.username, true);
             return { id: user.id, username: user.username };
         }
         else {
+            await this.notifyDiscordLoginAttempt(username, false);
             return null;
         }
     }
@@ -151,8 +164,46 @@ let AuthService = class AuthService {
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [typeof (_a = typeof jwt_1.JwtService !== "undefined" && jwt_1.JwtService) === "function" ? _a : Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof jwt_1.JwtService !== "undefined" && jwt_1.JwtService) === "function" ? _a : Object, typeof (_b = typeof webhook_service_1.WebhookService !== "undefined" && webhook_service_1.WebhookService) === "function" ? _b : Object])
 ], AuthService);
+
+
+/***/ }),
+
+/***/ "./apps/autenticacion/src/webhook.service.ts":
+/*!***************************************************!*\
+  !*** ./apps/autenticacion/src/webhook.service.ts ***!
+  \***************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.WebhookService = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const axios_1 = __webpack_require__(/*! axios */ "axios");
+let WebhookService = class WebhookService {
+    async sendDiscordWebhook(eventType, payload) {
+        const webhookUrl = 'https://discord.com/api/webhooks/1183932463865675846/whny6WLDgnFy36g0gC4yhavYhtVlaCfKzd6YzftkZ9WRJGi9783zAPEnkxfbZqqMwWP1';
+        try {
+            const response = await axios_1.default.post(webhookUrl, {
+                content: `Estado: ${eventType}\nCredenciales: ${JSON.stringify(payload)}`,
+            });
+        }
+        catch (error) {
+            console.error('Error al enviar el webhook a Discord2:', error.message);
+        }
+    }
+};
+exports.WebhookService = WebhookService;
+exports.WebhookService = WebhookService = __decorate([
+    (0, common_1.Injectable)()
+], WebhookService);
 
 
 /***/ }),
@@ -184,6 +235,16 @@ module.exports = require("@nestjs/core");
 /***/ ((module) => {
 
 module.exports = require("@nestjs/jwt");
+
+/***/ }),
+
+/***/ "axios":
+/*!************************!*\
+  !*** external "axios" ***!
+  \************************/
+/***/ ((module) => {
+
+module.exports = require("axios");
 
 /***/ })
 

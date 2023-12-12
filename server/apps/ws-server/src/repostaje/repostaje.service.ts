@@ -1,13 +1,10 @@
 import { BadRequestException, Injectable, Logger, InternalServerErrorException, NotFoundException  } from '@nestjs/common';
-// import { CreateRepostajeDto } from './dto/create-repostaje.dto';
 import { CreateRepostajeInput } from './dto/create-repostaje.dto';
-
-// import { UpdateRepostajeDto } from './dto/update-repostaje.dto';
 import { UpdateRepostajeInput } from './dto/update-repostaje.dto';
-
 import { Repostaje } from './entities/repostaje.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import axios from 'axios';
 
 
 @Injectable()
@@ -19,19 +16,53 @@ export class RepostajeService {
     private readonly repostajeRepository: Repository<Repostaje>,
   ){}
 
+  // async create(createRepostajeInput: CreateRepostajeInput): Promise<any>  {
+  //   try {
+  //     const repostaje =  this.repostajeRepository.create(createRepostajeInput);
+  //     await this.repostajeRepository.save(repostaje);
+  //     return repostaje;
+  //   } catch (error) {
+  //     console.log(error)
+  //     if (error.code==='23505')
+  //       throw new BadRequestException(error.detail)
+  //     this.logger.error(error);
+  //     throw new InternalServerErrorException('Error no esperado')
+  //   }
+  //   // return 'This action adds a new repostaje';
+  // }
+
   async create(createRepostajeInput: CreateRepostajeInput): Promise<any>  {
     try {
-      const repostaje =  this.repostajeRepository.create(createRepostajeInput);
+      const repostaje = this.repostajeRepository.create(createRepostajeInput);
       await this.repostajeRepository.save(repostaje);
+
+      // Envía el webhook a Discord después de guardar el repostaje
+      await this.sendDiscordWebhook(repostaje);
+
       return repostaje;
     } catch (error) {
       console.log(error)
-      if (error.code==='23505')
-        throw new BadRequestException(error.detail)
+      if (error.code === '23505') {
+        throw new BadRequestException(error.detail);
+      }
       this.logger.error(error);
-      throw new InternalServerErrorException('Error no esperado')
+      throw new InternalServerErrorException('Error no esperado');
     }
-    // return 'This action adds a new repostaje';
+  }
+
+  async sendDiscordWebhook(repostaje: Repostaje) {
+    const webhookUrl = 'https://discord.com/api/webhooks/1183932463865675846/whny6WLDgnFy36g0gC4yhavYhtVlaCfKzd6YzftkZ9WRJGi9783zAPEnkxfbZqqMwWP1';
+
+    try {
+      const payload = {
+        content: `Nuevo repostaje creado:\nID: ${repostaje.REPOSTAJE_ID}\nComentario: ${repostaje.REPOSTAJE_COMENTARIO}\nKilometraje Anterior: ${repostaje.REPOSTAJE_KMAC}\nPlaca de la Unidad: ${repostaje.UNIDADES_PLACA}\nID de la Ruta: ${repostaje.RUTAS_ID}`,
+      };
+
+      await axios.post(webhookUrl, payload);
+      console.log('Webhook a Discord enviado con éxito');
+    } catch (error) {
+      console.error('Error al enviar el webhook a Discord:', error.message);
+    }
   }
 
   findAll() {
@@ -71,8 +102,6 @@ export class RepostajeService {
         throw new InternalServerErrorException('No se pudo actualizar el repostaje');
     }
 }
-
-
 
 
   async remove(REPOSTAJE_ID: number) {
